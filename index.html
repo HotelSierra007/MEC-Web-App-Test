@@ -1360,7 +1360,7 @@ function renderRoute() {
     return;
   }
   if (from === to) { el.innerHTML = '<div class="wf-same">คุณอยู่ที่นี่แล้ว!</div>'; return; }
-  var steps = ROUTES[parseInt(from)][parseInt(to)];
+  var steps = ROUTES[parseInt(to)][parseInt(from)];
   if (!steps) { el.innerHTML = '<div class="wf-same">ไม่พบเส้นทาง</div>'; return; }
   var stepsHtml = '';
   for (var i = 0; i < steps.length; i++) {
