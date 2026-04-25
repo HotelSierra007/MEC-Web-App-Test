@@ -109,10 +109,12 @@
     .nav {
       flex-shrink: 0;
       min-height: var(--nav-h);
-      padding-bottom: env(safe-area-inset-bottom, 16px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
       background: rgba(0,0,0,.92); backdrop-filter: blur(20px);
       border-top: 1px solid var(--border);
-      display: flex; align-items: stretch; position: relative; z-index: 20;
+      display: flex; align-items: stretch;
+      position: sticky; bottom: 0; z-index: 20;
+      -webkit-sticky: bottom;
     }
     .nav-btn {
       flex: 1; display: flex; flex-direction: column; align-items: center;
@@ -594,7 +596,7 @@
 </head>
 <body style="background:#000;margin:0;padding:0;">
 
-<div class="shell" style="position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;height:100vh;display:flex;flex-direction:column;background:#0c0a1e;z-index:1;overflow:hidden;">
+<div class="shell" style="position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;height:100%;height:100dvh;display:flex;flex-direction:column;background:#0c0a1e;z-index:1;overflow:hidden;">
 
   <!-- ── TOPBAR ── -->
   <div class="topbar" style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;min-height:56px;background:rgba(0,0,0,0.85);border-bottom:1px solid rgba(255,255,255,0.1);position:relative;z-index:20;">
@@ -743,42 +745,42 @@
       <div class="section-label" style="margin-top:8px">ห้องน้ำ — Toilet Locations</div>
       <div class="wf-toilet-list">
         <div class="wf-toilet-row">
-          <div class="wf-toilet-icon">🚻</div>
+          <div class="wf-toilet-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--teal)"><path d="M12 3a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" fill="currentColor" stroke="none"/><path d="M8 6h8l1 6H7L8 6z"/><path d="M7 12l-1 5h12l-1-5"/><path d="M10 17v4M14 17v4"/></svg></div>
           <div class="wf-toilet-body">
             <div class="wf-toilet-name">อาคาร 50 ปี</div>
             <div class="wf-toilet-detail">ฝั่งตะวันตกของทุกชั้น</div>
           </div>
         </div>
         <div class="wf-toilet-row">
-          <div class="wf-toilet-icon">🚻</div>
+          <div class="wf-toilet-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--teal)"><path d="M12 3a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" fill="currentColor" stroke="none"/><path d="M8 6h8l1 6H7L8 6z"/><path d="M7 12l-1 5h12l-1-5"/><path d="M10 17v4M14 17v4"/></svg></div>
           <div class="wf-toilet-body">
             <div class="wf-toilet-name">อาคารเรียนรวม</div>
             <div class="wf-toilet-detail">ข้างลิฟท์ทุกชั้น <span class="wf-tip">ชั้นยิ่งสูงยิ่งสะอาด!</span></div>
           </div>
         </div>
         <div class="wf-toilet-row">
-          <div class="wf-toilet-icon">🚻</div>
+          <div class="wf-toilet-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--teal)"><path d="M12 3a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" fill="currentColor" stroke="none"/><path d="M8 6h8l1 6H7L8 6z"/><path d="M7 12l-1 5h12l-1-5"/><path d="M10 17v4M14 17v4"/></svg></div>
           <div class="wf-toilet-body">
             <div class="wf-toilet-name">อาคาร RN</div>
             <div class="wf-toilet-detail">ข้างลิฟท์ทุกชั้น</div>
           </div>
         </div>
         <div class="wf-toilet-row">
-          <div class="wf-toilet-icon">🚻</div>
+          <div class="wf-toilet-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--teal)"><path d="M12 3a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" fill="currentColor" stroke="none"/><path d="M8 6h8l1 6H7L8 6z"/><path d="M7 12l-1 5h12l-1-5"/><path d="M10 17v4M14 17v4"/></svg></div>
           <div class="wf-toilet-body">
             <div class="wf-toilet-name">อาคาร MD <span style="font-size:11px;color:var(--text-3)">(ระหว่าง 50 ปี และเรียนรวม)</span></div>
             <div class="wf-toilet-detail">ด้านหลังบันไดวนตรงกลางตึก ทุกชั้น <span class="wf-tip">ค่อนข้างสะอาด</span></div>
           </div>
         </div>
         <div class="wf-toilet-row">
-          <div class="wf-toilet-icon">🚻</div>
+          <div class="wf-toilet-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--teal)"><path d="M12 3a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" fill="currentColor" stroke="none"/><path d="M8 6h8l1 6H7L8 6z"/><path d="M7 12l-1 5h12l-1-5"/><path d="M10 17v4M14 17v4"/></svg></div>
           <div class="wf-toilet-body">
             <div class="wf-toilet-name">อาคารเฉลิมพระบารมี</div>
             <div class="wf-toilet-detail">ฝั่งเดียวกับลิฟท์ทุกชั้น <span class="wf-tip">แนะนำชั้น 15 — ชั้นอื่นมีผู้ป่วยหนาแน่น</span></div>
           </div>
         </div>
         <div class="wf-toilet-row">
-          <div class="wf-toilet-icon">🚻</div>
+          <div class="wf-toilet-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--teal)"><path d="M12 3a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" fill="currentColor" stroke="none"/><path d="M8 6h8l1 6H7L8 6z"/><path d="M7 12l-1 5h12l-1-5"/><path d="M10 17v4M14 17v4"/></svg></div>
           <div class="wf-toilet-body">
             <div class="wf-toilet-name">อาคารสุจิณโณ</div>
             <div class="wf-toilet-detail"><span class="wf-tip">แนะนำชั้น 15 เท่านั้น — ชั้นอื่นเป็นวอร์ดผู้ป่วย</span></div>
