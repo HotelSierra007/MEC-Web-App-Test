@@ -558,10 +558,9 @@
     }
 
     .wf-steps { padding: 8px 0; }
-    .wf-step {
-      display: flex; gap: 12px; padding: 8px 16px;
-      align-items: flex-start;
-    }
+    .wf-step { display: flex; flex-direction: column; gap: 8px; padding: 8px 16px; align-items: flex-start; }
+    .wf-step-photo img { width: 100%; height: auto; max-height: 120px; object-fit: cover; border-radius: 8px; }
+    .wf-step-content { display: flex; gap: 12px; align-items: flex-start; }
     .wf-step-num {
       width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
       background: var(--accent-dim); border: 1px solid rgba(169,139,212,.3);
@@ -617,7 +616,7 @@
     <div class="screen active" id="screen-home">
       <div class="home-hero">
         <div class="home-welcome">Welcome to MEC 2026</div>
-        <div class="home-sub">23rd Medical Ethics Camp · Faculty of Medicine, CMU<br>14–16 May 2026 · เชียงใหม่</div>
+        <div class="home-sub">23rd Medical Ethics Camp · Faculty of Medicine, CMU<br>14–16 May 2026 · Chiang Mai</div>
       </div>
 
       <!-- Pro-tip banner -->
@@ -713,7 +712,7 @@
             <option value="">— เลือกจุดเริ่มต้น —</option>
             <option value="0">ห้องประชุมชั้น 2 อาคาร 50 ปี</option>
             <option value="1">ชั้น 2 อาคารเรียนรวม</option>
-            <option value="2">ชั้น 5 RN</option>
+            <option value="2">ชั้น 5 อาคารราชนครินทร์</option>
             <option value="3">ชั้น 15 อาคารเฉลิมพระบารมี</option>
             <option value="4">ชั้น 15 อาคารสุจิณโณ</option>
           </select>
@@ -732,7 +731,7 @@
             <option value="">— เลือกปลายทาง —</option>
             <option value="0">ห้องประชุมชั้น 2 อาคาร 50 ปี</option>
             <option value="1">ชั้น 2 อาคารเรียนรวม</option>
-            <option value="2">ชั้น 5 RN</option>
+            <option value="2">ชั้น 5 อาคารราชนครินทร์</option>
             <option value="3">ชั้น 15 อาคารเฉลิมพระบารมี</option>
             <option value="4">ชั้น 15 อาคารสุจิณโณ</option>
           </select>
@@ -748,43 +747,43 @@
         <div class="wf-toilet-row">
           <div class="wf-toilet-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--teal)"><rect x="7" y="2" width="10" height="5" rx="1"/><path d="M6 7h12v2H6z"/><path d="M5 9c0 5 2 8 7 8s7-3 7-8H5z"/><path d="M9 17v3M15 17v3M8 20h8"/></svg></div>
           <div class="wf-toilet-body">
-            <div class="wf-toilet-name">อาคาร 50 ปี</div>
-            <div class="wf-toilet-detail">ฝั่งตะวันตกของทุกชั้น</div>
+            <div class="wf-toilet-name">อาคารเรียนและปฏิบัติการ 50 ปี</div>
+            <div class="wf-toilet-detail">อยู่บริเวณข้างโถงลิฟต์ของทุกชั้น <span class="wf-tip">(ยกเว้นชั้น 1 และชั้น M)</span></div>
           </div>
         </div>
         <div class="wf-toilet-row">
           <div class="wf-toilet-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--teal)"><rect x="7" y="2" width="10" height="5" rx="1"/><path d="M6 7h12v2H6z"/><path d="M5 9c0 5 2 8 7 8s7-3 7-8H5z"/><path d="M9 17v3M15 17v3M8 20h8"/></svg></div>
           <div class="wf-toilet-body">
             <div class="wf-toilet-name">อาคารเรียนรวม</div>
-            <div class="wf-toilet-detail">ข้างลิฟท์ทุกชั้น <span class="wf-tip">ชั้นยิ่งสูงยิ่งสะอาด!</span></div>
+            <div class="wf-toilet-detail">อยู่บริเวณข้างโถงลิฟต์ของทุกชั้น</div>
           </div>
         </div>
         <div class="wf-toilet-row">
           <div class="wf-toilet-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--teal)"><rect x="7" y="2" width="10" height="5" rx="1"/><path d="M6 7h12v2H6z"/><path d="M5 9c0 5 2 8 7 8s7-3 7-8H5z"/><path d="M9 17v3M15 17v3M8 20h8"/></svg></div>
           <div class="wf-toilet-body">
-            <div class="wf-toilet-name">อาคาร RN</div>
-            <div class="wf-toilet-detail">ข้างลิฟท์ทุกชั้น</div>
+            <div class="wf-toilet-name">อาคารเรียนรวมราชนครินทร์</div>
+            <div class="wf-toilet-detail">อยู่บริเวณข้างโถงลิฟต์ของทุกชั้น</div>
           </div>
         </div>
         <div class="wf-toilet-row">
           <div class="wf-toilet-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--teal)"><rect x="7" y="2" width="10" height="5" rx="1"/><path d="M6 7h12v2H6z"/><path d="M5 9c0 5 2 8 7 8s7-3 7-8H5z"/><path d="M9 17v3M15 17v3M8 20h8"/></svg></div>
           <div class="wf-toilet-body">
-            <div class="wf-toilet-name">อาคาร MD <span style="font-size:11px;color:var(--text-3)">(ระหว่าง 50 ปี และเรียนรวม)</span></div>
-            <div class="wf-toilet-detail">ด้านหลังบันไดวนตรงกลางตึก ทุกชั้น <span class="wf-tip">ค่อนข้างสะอาด</span></div>
+            <div class="wf-toilet-name">อาคาร MD <span style="font-size:11px;color:var(--text-3)">(ระหว่างอาคารฯ 50 ปี และอาคารเรียนรวม)</span></div>
+            <div class="wf-toilet-detail">อยู่ด้านหลังบันไดกลางอาคารของทุกชั้น</div>
           </div>
         </div>
         <div class="wf-toilet-row">
           <div class="wf-toilet-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--teal)"><rect x="7" y="2" width="10" height="5" rx="1"/><path d="M6 7h12v2H6z"/><path d="M5 9c0 5 2 8 7 8s7-3 7-8H5z"/><path d="M9 17v3M15 17v3M8 20h8"/></svg></div>
           <div class="wf-toilet-body">
             <div class="wf-toilet-name">อาคารเฉลิมพระบารมี</div>
-            <div class="wf-toilet-detail">ฝั่งเดียวกับลิฟท์ทุกชั้น <span class="wf-tip">แนะนำชั้น 15 — ชั้นอื่นมีผู้ป่วยหนาแน่น</span></div>
+            <div class="wf-toilet-detail">อยู่ข้างห้องประชุมเล็ก <span class="wf-tip">(เฉพาะชั้น 15 เท่านั้น)</span></div>
           </div>
         </div>
         <div class="wf-toilet-row">
           <div class="wf-toilet-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--teal)"><rect x="7" y="2" width="10" height="5" rx="1"/><path d="M6 7h12v2H6z"/><path d="M5 9c0 5 2 8 7 8s7-3 7-8H5z"/><path d="M9 17v3M15 17v3M8 20h8"/></svg></div>
           <div class="wf-toilet-body">
             <div class="wf-toilet-name">อาคารสุจิณโณ</div>
-            <div class="wf-toilet-detail"><span class="wf-tip">แนะนำชั้น 15 เท่านั้น — ชั้นอื่นเป็นวอร์ดผู้ป่วย</span></div>
+            <div class="wf-toilet-detail">กรุณาใช้ห้องน้ำบริเวณอาคารข้างเคียง <span class="wf-tip">(เฉพาะชั้น 1 เท่านั้น)</span></div>
           </div>
         </div>
       </div>
@@ -796,6 +795,7 @@
     <div class="screen" id="screen-schedule">
       <div class="day-tabs" id="day-tabs"></div>
       <div class="sched-date" id="sched-date"></div>
+      <div id="sched-dresscode" style="display:flex;align-items:center;font-size:13px;padding:0 16px 12px;color:var(--text-2);flex-wrap:wrap;gap:4px;"></div>
       <div class="sched-tl" id="sched-tl"></div>
       <div style="height:8px"></div>
     </div>
@@ -898,14 +898,14 @@
 const CAMP_START = new Date("2026-05-14T00:00:00");
 
 const ANNOUNCEMENTS = [
-  { id:1, time:"16:06", date:"25 Apr", type:"info", message:"ยินดีต้อนรับทุกคนสู่ MEC 2026! Welcome to the 23rd Medical Ethics Camp" },
+  { id:1, time:"16:06", date:"25 Apr", type:"info", message:"ยินดีต้อนรับทุกท่านสู่โครงการค่ายจริยธรรมสัญจร ครั้งที่ 23 Welcome to the 23rd Medical Ethics Camp" },
 ];
 
 const CONTACTS = [
   { name:"Head of First Aid (ป๊อปปี้)", role:"สำหรับยาหรือการปฐมพยาบาลเบื้องต้น", number:"0947356446", sos:true  },
   { name:"Head of GM (ปอไหม)",           role:"สำหรับปัญหาทั่วไปอื่น ๆ",            number:"0954138316", sos:false },
-  { name:"Head of President (ณัฐส้ม)",   role:"สำหรับปัญหาใหญ่",                    number:"0624358844", sos:false },
-  { name:"CMU Security",                  role:"สำหรับติดต่อ รปภ.",                  number:"35500",      sos:false },
+  { name:"President (ณัฐส้ม)",             role:"สำหรับปัญหาใหญ่",                    number:"0624358844", sos:false },
+  { name:"CMU Security",                  role:"สำหรับติดต่อ รปภ.",                  number:"053935500",  sos:false },
 ];
 
 // ────────────────────────────────────────────────────────
@@ -1016,7 +1016,7 @@ const SCHEDULE = [
   { day:0, time:"10:00", end:"11:00", name:"Keynote: From Hippocrates to High Technology",                                        location:"",                                                tag:"talk"     },
   { day:0, time:"11:00", end:"12:00", name:"Talkshow: Innovation",                                                                location:"",                                                tag:"talk"     },
   { day:0, time:"12:00", end:"13:00", name:"รับประทานอาหารกลางวัน",                                                               location:"โถงชั้น 1 อาคารเรียนและปฏิบัติการ 50 ปี",        tag:"meal"     },
-  { day:0, time:"13:00", end:"16:00", name:"Hackathon: Working Phase",                                                            location:"โถงชั้น 2 อาคารเรียนรวม / ชั้น 5 RN",            tag:"workshop" },
+  { day:0, time:"13:00", end:"16:00", name:"Hackathon: Working Phase",                                                            location:"โถงชั้น 2 อาคารเรียนรวม / ชั้น 5 อาคารราชนครินทร์",            tag:"workshop" },
   { day:0, time:"13:00", end:"16:00", name:"Workshop: Ethics under Digital Threats",                                              location:"ชั้น 15 อาคารเฉลิมพระบารมี",                     tag:"workshop" },
   { day:0, time:"13:00", end:"16:00", name:"การประชุมคณะอนุกรรมการแพทยสภา",                                                    location:"ชั้น 15 อาคารสุจิณโณ",                           tag:"special"  },
   { day:0, time:"16:00", end:"17:30", name:"เดินทางกลับโรงแรมและพักผ่อนตามอัธยาศัย",                                            location:"โรงแรม Furama และแกรนด์ ชัยพฤกษ์",               tag:"free"     },
@@ -1043,6 +1043,11 @@ const SCHEDULE = [
 
 const DAY_LABELS = ["Thu 14/5","Fri 15/5","Sat 16/5"];
 const DAY_LONG   = ["Thursday, 14 May 2026","Friday, 15 May 2026","Saturday, 16 May 2026"];
+const DRESS_CODE = [
+  { icon:"👔", text:"ชุดสุภาพ (Smart Casual)", en:"Smart Casual — formal dress not required" },
+  { icon:"👕", text:"เสื้อค่าย",                en:"Camp Shirt"                                },
+  { icon:"🎓", text:"เสื้อสถาบัน",              en:"Institution Shirt"                         },
+];
 
 // ════════════════════════════════════════════════════════
 // HELPERS
@@ -1227,6 +1232,11 @@ function renderSchedule(scrollToCurrent) {
   ).join('');
 
   document.getElementById('sched-date').textContent = DAY_LONG[activeDay];
+  var dc = DRESS_CODE[activeDay];
+  var dcEl = document.getElementById('sched-dresscode');
+  if (dcEl && dc) {
+    dcEl.innerHTML = '<span style="margin-right:6px">' + dc.icon + '</span><span style="color:var(--text);font-weight:600">' + dc.text + '</span><span style="color:var(--text-3);font-size:11px;margin-left:6px">— ' + dc.en + '</span>';
+  }
 
   const items = SCHEDULE.filter(s=>s.day===activeDay);
   const nm = nowMin();
@@ -1319,7 +1329,7 @@ function showPhotosPage() {
 const LOC_NAMES = [
   "ห้องประชุมชั้น 2 อาคาร 50 ปี",
   "ชั้น 2 อาคารเรียนรวม",
-  "ชั้น 5 อาคาร RN",
+  "ชั้น 5 อาคารราชนครินทร์",
   "ชั้น 15 อาคารเฉลิมพระบารมี",
   "ชั้น 15 อาคารสุจิณโณ",
 ];
@@ -1340,7 +1350,7 @@ const ROUTES = [
     ["กดลิฟท์ลงมาชั้น 1 แล้วเดินไปทางที่มีบันไดเลื่อน","ขึ้นบันไดเลื่อน แล้วเบี่ยงซ้าย เดินตรงไปประมาณ 10 เมตร จะมีทางเลี้ยวซ้าย","เดินตรงไปตามทางจนสุด เบี่ยงซ้ายเล็กน้อย แล้วเดินตรงต่อไปจนสุดอีกครั้ง","เดินผ่านประตูที่นำออกไป skywalk ด้านนอก โดยค่อนไปทางซ้ายเล็กน้อย","เดินตรงไปจนสุด เลี้ยวขวา แล้วเลี้ยวซ้ายอีกครั้ง","เดินตรงไปประมาณ 30 เมตร จะเจอประตูเข้าตึกด้านซ้าย","เลี้ยวซ้าย เดินเข้าประตูผ่านลิฟท์ 3 ตัว และบันได แล้วเลี้ยวขวา"],
     ["กดลิฟท์ลงมาชั้น 1 แล้วเลี้ยวขวา จากนั้นเลี้ยวซ้ายเดินออกประตูเข้า skywalk","เดินตรงไปจนสุด เลี้ยวขวา แล้วเลี้ยวซ้ายอีกครั้ง","เดินตรงไปประมาณ 30 เมตร จะเจอประตูเข้าตึกด้านซ้าย","เลี้ยวซ้าย เดินเข้าประตูผ่านลิฟท์ 3 ตัว และบันได แล้วเลี้ยวขวา"],
   ],
-  // FROM 2: ชั้น 5 RN
+  // FROM 2: ชั้น 5 อาคารราชนครินทร์
   [
     ["เดินออกจากประตูระหว่างห้องน้ำทางทิศใต้ แล้วเลี้ยวซ้าย","เลี้ยวขวา แล้วเดินตรงไปตามทางประมาณ 100 เมตรจนถึง skywalk","เลี้ยวซ้าย แล้วเดินตรงไปประมาณ 20 เมตร จะเจอทางเดินลงเล็ก ๆ ด้านขวา","เดินลงบันได แล้วเลี้ยวขวาเมื่อเข้าไปในตึก จะเจอลิฟท์ 4 ตัวอยู่ด้านหน้า","กดลิฟท์ขึ้นไปชั้น 5"],
     ["เดินผ่านลิฟท์ 3 ตัว ไปทางทิศเหนือ แล้วเลี้ยวขวา","เดินตรงไปประมาณ 30 เมตร จะเจอทางเดินลงเล็ก ๆ ด้านขวา","เดินลงบันได แล้วเลี้ยวขวาเมื่อเข้าไปในตึก จะเจอลิฟท์ 4 ตัวอยู่ด้านหน้า","กดลิฟท์ขึ้นไปชั้น 5"],
@@ -1380,7 +1390,11 @@ function renderRoute() {
   if (!steps) { el.innerHTML = '<div class="wf-same">ไม่พบเส้นทาง</div>'; return; }
   var stepsHtml = '';
   for (var i = 0; i < steps.length; i++) {
-    stepsHtml += '<div class="wf-step"><div class="wf-step-num">' + (i+1) + '</div><div class="wf-step-text">' + esc(steps[i]) + '</div></div>';
+    var step = steps[i];
+    var text = typeof step === 'string' ? step : step.text;
+    var photo = typeof step === 'string' ? null : step.photo;
+    var photoHtml = photo ? '<div class="wf-step-photo"><img src="' + esc(photo) + '" alt="Step ' + (i+1) + '" loading="lazy"/></div>' : '';
+    stepsHtml += '<div class="wf-step"><div class="wf-step-content"><div class="wf-step-num">' + (i+1) + '</div><div class="wf-step-text">' + esc(text) + '</div></div>' + photoHtml + '</div>';
   }
   var title = esc(LOC_NAMES[from]) + ' &rarr; ' + esc(LOC_NAMES[to]);
   el.innerHTML = '<div class="wf-route"><div class="wf-route-head"><div class="wf-route-title">' + title + '</div></div><div class="wf-steps">' + stepsHtml + '</div></div>';
