@@ -104,14 +104,16 @@
     .topbar-right { width: 36px; } /* spacer for balance */
 
     /* ─── SCREENS ───────────────────────────────────────────── */
-    .screens { flex: 1; overflow: hidden; position: relative; min-height: 0; }
+    .screens { flex: 1; overflow: hidden; position: relative; min-height: 0; transform: translateZ(0); }
     .screen {
       position: absolute; inset: 0;
       overflow-y: auto; overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
       display: none; padding-bottom: calc(var(--nav-h) + var(--safe-b) + 16px);
-      -webkit-overflow-scrolling: touch;
       will-change: scroll-position;
+      touch-action: pan-y;
+      transform: translateZ(0);
     }
     .screen.active { display: block; }
     .screen::-webkit-scrollbar { display: none; }
@@ -1588,6 +1590,12 @@ function swapLocations() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+
+  // Register all touch events as passive for smooth scrolling
+  document.querySelectorAll('.screen').forEach(function(el) {
+    el.addEventListener('touchstart', function(){}, {passive: true});
+    el.addEventListener('touchmove', function(){}, {passive: true});
+  });
   renderHomeSchedule();
   renderHomeAnnounce();
   renderAnnouncements();
