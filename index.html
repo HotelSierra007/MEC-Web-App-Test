@@ -102,6 +102,8 @@
       overflow-y: auto; overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       display: none; padding-bottom: calc(var(--nav-h) + var(--safe-b) + 16px);
+      -webkit-overflow-scrolling: touch;
+      will-change: scroll-position;
     }
     .screen.active { display: block; }
     .screen::-webkit-scrollbar { display: none; }
@@ -595,8 +597,8 @@
 
     /* ─── FEEDBACK FAB ──────────────────────────────────────── */
     .fab-feedback {
-      position: fixed; bottom: calc(var(--nav-h) + env(safe-area-inset-bottom,0px) + 12px);
-      right: 20px; z-index: 50;
+      position: fixed; bottom: calc(var(--nav-h) + env(safe-area-inset-bottom,0px) + 20px);
+      right: 15px; z-index: 50;
       display: flex; flex-direction: column; align-items: flex-end; gap: 8px;
     }
     .fab-popup {
@@ -610,15 +612,15 @@
     }
     .fab-popup.show { opacity: 1; pointer-events: all; transform: none; }
     .fab-btn {
-      width: 48px; height: 48px; border-radius: 50%;
+      width: 56px; height: 56px; border-radius: 50%;
       background: var(--accent); border: none; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 16px rgba(169,139,212,.4);
+      box-shadow: 0 2px 8px rgba(0,0,0,.4);
       transition: background .2s, transform .1s;
     }
     .fab-btn:active { transform: scale(.93); }
     .fab-btn.confirm { background: var(--teal); }
-    .fab-btn svg { width: 22px; height: 22px; stroke: #fff; stroke-width: 2; fill: none; }
+    .fab-btn svg { width: 26px; height: 26px; stroke: #fff; stroke-width: 2; fill: none; }
   </style>
 </head>
 <body style="background:#000;margin:0;padding:0;">
@@ -720,7 +722,7 @@
             <svg class="acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
           <div class="acc-body">
-            <img src="aed_50pi.jpg" style="width:100%;border-radius:8px;margin-top:4px" loading="lazy" alt="AED อาคาร 50 ปี"/>
+            <img src="aed_50pi.jpg" style="width:100%;border-radius:8px;margin-top:4px;aspect-ratio:4/3;object-fit:cover" loading="lazy" alt="AED อาคาร 50 ปี"/>
           </div>
         </div>
         <div class="acc-item" id="aed-1">
@@ -738,7 +740,7 @@
             <svg class="acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
           <div class="acc-body">
-            <img src="aed_rr2.jpg" style="width:100%;border-radius:8px;margin-top:4px" loading="lazy" alt="AED อาคารเรียนรวม ชั้น 2"/>
+            <img src="aed_rr2.jpg" style="width:100%;border-radius:8px;margin-top:4px";aspect-ratio:4/3;object-fit:cover loading="lazy" alt="AED อาคารเรียนรวม ชั้น 2"/>
           </div>
         </div>
         <div class="acc-item" id="aed-3">
@@ -747,7 +749,7 @@
             <svg class="acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
           <div class="acc-body">
-            <img src="aed_rr6.jpg" style="width:100%;border-radius:8px;margin-top:4px" loading="lazy" alt="AED อาคารเรียนรวม ชั้น 6"/>
+            <img src="aed_rr6.jpg" style="width:100%;border-radius:8px;margin-top:4px";aspect-ratio:4/3;object-fit:cover loading="lazy" alt="AED อาคารเรียนรวม ชั้น 6"/>
           </div>
         </div>
         <div class="acc-item" id="aed-4">
@@ -756,7 +758,7 @@
             <svg class="acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
           <div class="acc-body">
-            <img src="aed_rn1.jpg" style="width:100%;border-radius:8px;margin-top:4px" loading="lazy" alt="AED อาคารราชนครินทร์"/>
+            <img src="aed_rn1.jpg" style="width:100%;border-radius:8px;margin-top:4px";aspect-ratio:4/3;object-fit:cover loading="lazy" alt="AED อาคารราชนครินทร์"/>
           </div>
         </div>
         <div class="acc-item" id="aed-5">
@@ -765,7 +767,7 @@
             <svg class="acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
           <div class="acc-body">
-            <img src="aed_cb15.jpg" style="width:100%;border-radius:8px;margin-top:4px" loading="lazy" alt="AED อาคารเฉลิมพระบารมี"/>
+            <img src="aed_cb15.jpg" style="width:100%;border-radius:8px;margin-top:4px";aspect-ratio:4/3;object-fit:cover loading="lazy" alt="AED อาคารเฉลิมพระบารมี"/>
           </div>
         </div>
         <div class="acc-item" id="aed-6">
@@ -774,7 +776,7 @@
             <svg class="acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
           <div class="acc-body">
-            <img src="aed_sj1.jpg" style="width:100%;border-radius:8px;margin-top:4px" loading="lazy" alt="AED อาคารสุจิณโณ ชั้น 1"/>
+            <img src="aed_sj1.jpg" style="width:100%;border-radius:8px;margin-top:4px";aspect-ratio:4/3;object-fit:cover loading="lazy" alt="AED อาคารสุจิณโณ ชั้น 1"/>
           </div>
         </div>
         <div class="acc-item" id="aed-7">
@@ -783,7 +785,7 @@
             <svg class="acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
           <div class="acc-body">
-            <img src="aed_sj15.jpg" style="width:100%;border-radius:8px;margin-top:4px" loading="lazy" alt="AED อาคารสุจิณโณ ชั้น 15"/>
+            <img src="aed_sj15.jpg" style="width:100%;border-radius:8px;margin-top:4px";aspect-ratio:4/3;object-fit:cover loading="lazy" alt="AED อาคารสุจิณโณ ชั้น 15"/>
           </div>
         </div>
         <div class="acc-item" id="aed-8">
@@ -792,7 +794,7 @@
             <svg class="acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
           <div class="acc-body">
-            <img src="aed_dorm.jpg" style="width:100%;border-radius:8px;margin-top:4px" loading="lazy" alt="AED หอพักนักศึกษาแพทย์"/>
+            <img src="aed_dorm.jpg" style="width:100%;border-radius:8px;margin-top:4px";aspect-ratio:4/3;object-fit:cover loading="lazy" alt="AED หอพักนักศึกษาแพทย์"/>
           </div>
         </div>
       </div>
