@@ -84,6 +84,7 @@
       flex-direction: column;
       overflow: hidden;
       background: var(--bg);
+      max-width: 480px;
     }
 
     /* ─── TOPBAR ────────────────────────────────────────────── */
@@ -104,7 +105,8 @@
     .topbar-right { width: 36px; } /* spacer for balance */
 
     /* ─── SCREENS ───────────────────────────────────────────── */
-    .screens { flex: 1; overflow: hidden; position: relative; min-height: 0; transform: translateZ(0); }
+    .screens { flex: 1; overflow: hidden; position: relative; min-height: 0; transform: translateZ(0); -ms-overflow-style: none; scrollbar-width: none; }
+    .screens::-webkit-scrollbar { display: none; }
     .screen {
       position: absolute; inset: 0;
       overflow-y: auto; overflow-x: hidden;
@@ -117,6 +119,7 @@
     }
     .screen.active { display: block; }
     .screen::-webkit-scrollbar { display: none; }
+    .screen { -ms-overflow-style: none; scrollbar-width: none; }
 
     /* ─── BOTTOM NAV ────────────────────────────────────────── */
     .nav {
