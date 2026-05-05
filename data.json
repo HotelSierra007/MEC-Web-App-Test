@@ -1,0 +1,21 @@
+{
+  "_comment": "Edit this file to push announcements without redeploying index.html. Bump the 'version' integer whenever you add or change an announcement so clients can detect new content. The 'id' on each announcement is what the client uses to track which ones a user has already seen — never reuse an id.",
+  "version": 2,
+  "lastUpdated": "2026-04-29T18:26:00+07:00",
+  "announcements": [
+    {
+      "id": 2,
+      "time": "18:26",
+      "date": "29 Apr",
+      "type": "info",
+      "message": "โปรดนำป้ายชื่อของท่านมาในงาน Welcome Party เพื่อเข้าร่วมฐานกิจกรรม และ workshop ในช่วงเย็นวันที่ 14 พ.ค."
+    },
+    {
+      "id": 1,
+      "time": "16:06",
+      "date": "25 Apr",
+      "type": "info",
+      "message": "ยินดีต้อนรับทุกท่านสู่โครงการค่ายจริยธรรมสัญจร ครั้งที่ 23 Welcome to the 23rd Medical Ethics Camp"
+    }
+  ]
+}
