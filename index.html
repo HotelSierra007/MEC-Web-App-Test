@@ -297,6 +297,7 @@
       border-bottom: 1px solid var(--border-lt);
       padding: 14px 16px; display: flex; gap: 12px;
       transition: background .12s; cursor: default;
+      touch-action: pan-y;
     }
     .ann-card:active { background: rgba(255,255,255,.03); }
     .ann-avatar {
@@ -618,8 +619,10 @@
       position: fixed; bottom: calc(var(--nav-h) + env(safe-area-inset-bottom,0px) + 20px);
       right: 15px; z-index: 50;
       display: flex; flex-direction: column; align-items: flex-end; gap: 8px;
+      pointer-events: none;
     }
     .fab-popup {
+      pointer-events: auto;
       background: var(--bg-card); border: 1px solid var(--border);
       border-radius: 12px; padding: 10px 14px;
       font-size: 13px; font-weight: 600; color: var(--text);
@@ -630,6 +633,8 @@
     }
     .fab-popup.show { opacity: 1; pointer-events: all; transform: none; }
     .fab-btn {
+      pointer-events: auto;
+      touch-action: manipulation;
       width: 56px; height: 56px; border-radius: 50%;
       background: var(--accent); border: none; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
@@ -958,7 +963,7 @@
           <div class="wf-toilet-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--teal)"><rect x="7" y="2" width="10" height="5" rx="1"/><path d="M6 7h12v2H6z"/><path d="M5 9c0 5 2 8 7 8s7-3 7-8H5z"/><path d="M9 17v3M15 17v3M8 20h8"/></svg></div>
           <div class="wf-toilet-body">
             <div class="wf-toilet-name">อาคารสุจิณโณ</div>
-            <div class="wf-toilet-detail">กรุณาใช้ห้องน้ำบริเวณอาคารข้างเคียง <span class="wf-tip">(เฉพาะชั้น 1 เท่านั้น)</span></div>
+            <div class="wf-toilet-detail">อยู่บริเวณข้างโถงลิฟต์ <span class="wf-tip">(เฉพาะชั้น 15 เท่านั้น)</span></div>
           </div>
         </div>
       </div>
@@ -1044,15 +1049,16 @@
   </nav>
 
 
-  <!-- ── FEEDBACK FAB ── -->
-  <div class="fab-feedback" id="fab-feedback">
-    <div class="fab-popup" id="fab-popup">Give us feedback!</div>
-    <button class="fab-btn" id="fab-btn" onclick="handleFab()" aria-label="Feedback">
-      <svg id="fab-icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-    </button>
-  </div>
 
 </div><!-- /shell -->
+
+<!-- ── FEEDBACK FAB — outside shell to avoid scroll interference ── -->
+<div class="fab-feedback" id="fab-feedback">
+  <div class="fab-popup" id="fab-popup">Give us feedback!</div>
+  <button class="fab-btn" id="fab-btn" onclick="handleFab()" aria-label="Feedback">
+    <svg id="fab-icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+  </button>
+</div>
 
 <!-- ── SIDE DRAWER ── -->
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
@@ -1808,11 +1814,11 @@ function resetFab() {
   fabState = 0;
 }
 // Close on tap outside
-document.addEventListener('click', function(e) {
+document.addEventListener('touchstart', function(e) {
   if (fabState === 1 && !document.getElementById('fab-feedback').contains(e.target)) {
     resetFab();
   }
-});
+}, {passive: true});
 
 // ════════════════════════════════════════════════════════
 // WAYFINDING
