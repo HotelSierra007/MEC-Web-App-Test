@@ -639,7 +639,8 @@
     /* ─── SCHEDULE SUB-TABS ────────────────────────────────── */
     .sched-subtabs {
       display: flex; gap: 0; border-bottom: 1px solid var(--border);
-      padding: 0 16px; background: rgba(0,0,0,.85);
+      padding: 0 16px; background: rgba(0,0,0,.9); backdrop-filter: blur(16px);
+      position: sticky; top: 0; z-index: 10;
     }
     .sched-subtab {
       flex: 1; padding: 8px 0; font-size: 13px; font-weight: 600;
@@ -649,7 +650,8 @@
     .sched-subtab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
     /* Transport rows */
-    .transport-tl { padding-bottom: 8px; }
+    .transport-tl { padding-bottom: 8px; contain: layout style; }
+    #events-wrap, #transport-wrap { contain: layout style; }
   </style>
 </head>
 <body style="background:#000;margin:0;padding:0;">
@@ -1592,6 +1594,12 @@ function renderSchedule(scrollToCurrent) {
     </div>`;
   }).join('');
 
+  // Re-register passive touch on dynamically injected content
+  var stl = document.getElementById('sched-tl');
+  if (stl) {
+    stl.addEventListener('touchstart', function(){}, {passive: true});
+    stl.addEventListener('touchmove', function(){}, {passive: true});
+  }
   // Auto-scroll to current event
   if (scrollToCurrent && nowRowId) {
     setTimeout(()=>{
@@ -1696,6 +1704,12 @@ function renderTransport(scrollToCurrent, dayVal) {
   }
   html += '</div>';
   document.getElementById('transport-tl').innerHTML = html || '<div style="padding:20px 16px;color:var(--text-3);font-size:14px;text-align:center;">ไม่มีรอบรถในวันนี้</div>';
+  // Re-register passive touch on dynamically injected content
+  var tl = document.getElementById('transport-tl');
+  if (tl) {
+    tl.addEventListener('touchstart', function(){}, {passive: true});
+    tl.addEventListener('touchmove', function(){}, {passive: true});
+  }
   if (scrollToCurrent && nowIdx >= 0) {
     setTimeout(function() {
       var cards = document.querySelectorAll('#transport-tl > div > div');
