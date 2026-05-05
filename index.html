@@ -635,6 +635,21 @@
     .fab-btn:active { transform: scale(.93); }
     .fab-btn.confirm { background: var(--teal); }
     .fab-btn svg { width: 26px; height: 26px; stroke: #fff; stroke-width: 2; fill: none; }
+
+    /* ─── SCHEDULE SUB-TABS ────────────────────────────────── */
+    .sched-subtabs {
+      display: flex; gap: 0; border-bottom: 1px solid var(--border);
+      padding: 0 16px; background: rgba(0,0,0,.85);
+    }
+    .sched-subtab {
+      flex: 1; padding: 8px 0; font-size: 13px; font-weight: 600;
+      color: var(--text-2); border: none; background: none; cursor: pointer;
+      border-bottom: 2px solid transparent; transition: color .15s, border-color .15s;
+    }
+    .sched-subtab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* Transport rows */
+    .transport-tl { padding-bottom: 8px; }
   </style>
 </head>
 <body style="background:#000;margin:0;padding:0;">
@@ -679,6 +694,10 @@
         <div class="card-inner" id="home-schedule"></div>
       </div>
 
+      <div class="section-label" id="next-bus-label">Next Bus</div>
+      <div class="card" id="next-bus-card">
+        <div class="card-inner" id="next-bus"></div>
+      </div>
       <div class="section-label">Latest Update</div>
       <div class="card">
         <div class="card-inner" id="home-announce"></div>
@@ -922,10 +941,23 @@
 
     <!-- SCHEDULE -->
     <div class="screen" id="screen-schedule">
-      <div class="day-tabs" id="day-tabs"></div>
-      <div class="sched-date" id="sched-date"></div>
-      <div id="sched-dresscode" style="display:flex;align-items:center;font-size:13px;padding:0 16px 12px;color:var(--text-2);flex-wrap:wrap;gap:4px;"></div>
-      <div class="sched-tl" id="sched-tl"></div>
+      <div class="sched-subtabs">
+        <button class="sched-subtab active" id="subtab-events" onclick="setSubTab('events')">Events</button>
+        <button class="sched-subtab" id="subtab-transport" onclick="setSubTab('transport')">Transportation</button>
+      </div>
+      <!-- Events sub-tab content -->
+      <div id="events-wrap">
+        <div class="day-tabs" id="day-tabs"></div>
+        <div class="sched-date" id="sched-date"></div>
+        <div id="sched-dresscode" style="display:flex;align-items:center;font-size:13px;padding:0 16px 12px;color:var(--text-2);flex-wrap:wrap;gap:4px;"></div>
+        <div id="sched-tl" class="sched-tl"></div>
+      </div>
+      <!-- Transport sub-tab content -->
+      <div id="transport-wrap" style="display:none">
+        <div class="day-tabs" id="transport-day-tabs"></div>
+        <div class="sched-date" id="transport-date"></div>
+        <div id="transport-tl" class="transport-tl"></div>
+      </div>
       <div style="height:8px"></div>
     </div>
 
@@ -944,7 +976,7 @@
           <div class="photos-hero-text">All official camp photos will be carefully retouched and compiled into a Google Drive folder. The album will be made available as soon as possible after the event ends.<br><br>We want every memory to look its best — thank you for your patience!</div>
         </div>
       </div>
-      <a class="photos-drive-btn" href="https://drive.google.com" target="_blank">
+      <a class="photos-drive-btn" href="https://cmu.to/mecphotos" target="_blank">
         <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
         Access Photo Album on Google Drive
       </a>
@@ -1037,12 +1069,12 @@ const ANNOUNCEMENTS = [
 ];
 
 const CONTACTS = [
-  { name:"Head of First Aid", role:"สำหรับยาหรือการปฐมพยาบาลเบื้องต้น", number:"0947356446", nickname:"ป๊อปปี้", sos:true  },
-  { name:"Head of GM",                   role:"สำหรับปัญหาทั่วไปอื่น ๆ",            number:"0954138316", nickname:"ปอไหม", sos:false },
-  { name:"President",                     role:"สำหรับปัญหาใหญ่",                    number:"0624358844", nickname:"ณัฐส้ม", sos:false },
-  { name:"Subcommittee's GM",              role:"สำหรับติดต่อผู้ดูแลคณะอนุกรรมการ", number:"0873032508", number2:"0947723464", nickname:"พี่ขวัญ", nickname2:"จูเนียร์", sos:false },
-  { name:"เจ้าหน้าที่ประสานงานโครงการ", role:"สามารถติดต่อพี่ปรามได้ 24 ชั่วโมง", number:"0899987627", number2:"0612683942", nickname:"พี่จีน", nickname2:"พี่ปราม", sos:false },
-  { name:"CMU Security",                  role:"สำหรับติดต่อ รปภ.",                  number:"053935500",  nickname:null, sos:false },
+  { name:"Head of First Aid", role:"สำหรับยาหรือการปฐมพยาบาลเบื้องต้น", number:"0947356446", nickname:"ป๊อปปี้", sos:true },
+  { name:"Head of GM",        role:"สำหรับปัญหาทั่วไปอื่น ๆ",            number:"0954138316", nickname:"ปอไหม",   sos:false },
+  { name:"President",         role:"สำหรับปัญหาใหญ่",                    number:"0624358844", nickname:"ณัฐส้ม",  sos:false },
+  { name:"เจ้าหน้าที่ประสานงานโครงการ", role:"สามารถติดต่อพี่ปรามได้ 24 ชั่วโมง", number:"0873032508", number2:"0899987627", number3:"0612683942", nickname:"พี่ขวัญ", nickname2:"พี่จีน", nickname3:"พี่ปราม", sos:false },
+  { name:"Subcommittee's GM", role:"สำหรับติดต่อผู้ดูแลคณะอนุกรรมการ",  number:"0947743464", nickname:"จูเนียร์", sos:false },
+  { name:"CMU Security",      role:"สำหรับติดต่อ รปภ.",                  number:"053935500",  nickname:null,      sos:false },
 ];
 
 // ────────────────────────────────────────────────────────
@@ -1148,38 +1180,82 @@ const FIRST_AID = [
 
 const SCHEDULE = [
   // ── DAY 1 · Thu 14 May 2026 ─────────────────────────────
-  { day:0, time:"09:00", end:"09:30", name:"ลงทะเบียน",                                                                          location:"ห้องประชุมชั้น 2 อาคารเรียนและปฏิบัติการ 50 ปี", tag:"special"  },
-  { day:0, time:"09:30", end:"10:00", name:"พิธีเปิดโครงการค่ายจริยธรรมสัญจรครั้งที่ 23",                                       location:"ห้องประชุมชั้น 2 อาคารเรียนและปฏิบัติการ 50 ปี", tag:"special"  },
-  { day:0, time:"10:00", end:"11:00", name:"Keynote: From Hippocrates to High Technology",                                        location:"",                                                tag:"talk"     },
-  { day:0, time:"11:00", end:"12:00", name:"Talkshow: Innovation",                                                                location:"",                                                tag:"talk"     },
-  { day:0, time:"12:00", end:"13:00", name:"รับประทานอาหารกลางวัน",                                                               location:"โถงชั้น 1 อาคารเรียนและปฏิบัติการ 50 ปี",        tag:"meal"     },
-  { day:0, time:"13:00", end:"16:00", name:"Hackathon: Working Phase",                                                            location:"โถงชั้น 2 อาคารเรียนรวม / ชั้น 5 อาคารราชนครินทร์",            tag:"workshop" },
-  { day:0, time:"13:00", end:"16:00", name:"Workshop: Ethics under Digital Threats",                                              location:"ชั้น 15 อาคารเฉลิมพระบารมี",                     tag:"workshop" },
-  { day:0, time:"13:00", end:"16:00", name:"การประชุมคณะอนุกรรมการแพทยสภา",                                                    location:"ชั้น 15 อาคารสุจิณโณ",                           tag:"special"  },
-  { day:0, time:"16:00", end:"17:30", name:"เดินทางกลับโรงแรมและพักผ่อนตามอัธยาศัย",                                            location:"โรงแรม Furama และแกรนด์ ชัยพฤกษ์",               tag:"free"     },
-  { day:0, time:"17:30", end:"18:00", name:"เดินทางไปยังหอประชุมมหาวิทยาลัยเชียงใหม่",                                          location:"",                                                tag:"travel"   },
-  { day:0, time:"18:00", end:"21:00", name:"งานเลี้ยงต้อนรับและงานเลี้ยงขันโตก",                                                location:"หอประชุมมหาวิทยาลัยเชียงใหม่",                   tag:"special"  },
-  { day:0, time:"21:00", end:"21:30", name:"เดินทางกลับโรงแรมและพักผ่อนตามอัธยาศัย",                                            location:"โรงแรม Furama และแกรนด์ ชัยพฤกษ์",               tag:"free"     },
+  { day:0, time:"09:00", end:"09:30", name:"ลงทะเบียน", location:"ห้องประชุมชั้น 2 อาคารเรียนและปฏิบัติการ 50 ปี", tag:"special" },
+  { day:0, time:"09:30", end:"10:00", name:"พิธีเปิดโครงการค่ายจริยธรรมสัญจรครั้งที่ 23", location:"ห้องประชุมชั้น 2 อาคารเรียนและปฏิบัติการ 50 ปี", tag:"special" },
+  { day:0, time:"10:00", end:"10:15", name:"พักรับประทานอาหารว่าง", location:"", tag:"free" },
+  { day:0, time:"10:15", end:"11:00", name:"Keynote: From Hippocrates to High Technology", location:"", tag:"talk" },
+  { day:0, time:"11:00", end:"12:00", name:"Talkshow: Innovation", location:"", tag:"talk" },
+  { day:0, time:"12:00", end:"13:00", name:"รับประทานอาหารกลางวัน", location:"", tag:"meal" },
+  { day:0, time:"13:00", end:"16:00", name:"Hackathon: Working Phase", location:"ชั้น 5 RN", tag:"workshop" },
+  { day:0, time:"13:00", end:"16:00", name:"Workshop: Ethic under Digital Threats: Scam, Technology, and Institutional Responsibility", location:"ชั้น 15 อาคารเฉลิมพระบารมี", tag:"workshop" },
+  { day:0, time:"13:00", end:"16:00", name:"การประชุมคณะอนุกรรมการแพทยสภา", location:"ชั้น 15 อาคารสุจิณโณ", tag:"special" },
+  { day:0, time:"16:00", end:"17:30", name:"เดินทางกลับโรงแรมและพักผ่อนตามอัธยาศัย", location:"โรงแรม Furama และแกรนด์ ชัยพฤกษ์", tag:"free" },
+  { day:0, time:"17:30", end:"18:00", name:"เดินทางไปยังหอประชุมมหาวิทยาลัยเชียงใหม่", location:"", tag:"travel" },
+  { day:0, time:"18:00", end:"21:00", name:"งานเลี้ยงต้อนรับและงานเลี้ยงขันโตก", location:"หอประชุมมหาวิทยาลัยเชียงใหม่", tag:"special" },
+  { day:0, time:"21:00", end:"21:30", name:"เดินทางกลับโรงแรมและพักผ่อนตามอัธยาศัย", location:"โรงแรม Furama และแกรนด์ ชัยพฤกษ์", tag:"free" },
 
   // ── DAY 2 · Fri 15 May 2026 ─────────────────────────────
-  { day:1, time:"08:30", end:"09:00", name:"เดินทางจากโรงแรมไปคณะแพทยศาสตร์ มช.",                                               location:"โรงแรม Furama และแกรนด์ ชัยพฤกษ์",               tag:"travel"   },
-  { day:1, time:"09:00", end:"10:30", name:"Hackathon: Pitching Phase",                                                           location:"ห้องประชุมชั้น 2 อาคารเรียนและปฏิบัติการ 50 ปี", tag:"special"  },
-  { day:1, time:"10:30", end:"11:00", name:"พักรับประทานอาหารว่าง",                                                               location:"",                                                tag:"free"     },
-  { day:1, time:"11:00", end:"12:00", name:"Keynote: Sustainability",                                                             location:"",                                                tag:"talk"     },
-  { day:1, time:"12:00", end:"13:00", name:"รับประทานอาหารกลางวัน",                                                               location:"โถงชั้น 1 อาคารเรียนและปฏิบัติการ 50 ปี",        tag:"meal"     },
-  { day:1, time:"13:00", end:"18:00", name:"Chiang Mai Tour",                                                                     location:"เชียงใหม่",                                       tag:"travel"   },
-  { day:1, time:"18:00", end:"19:00", name:"เดินทางกลับโรงแรมและพักผ่อนตามอัธยาศัย",                                            location:"โรงแรม Furama และแกรนด์ ชัยพฤกษ์",               tag:"free"     },
+  { day:1, time:"08:30", end:"09:00", name:"เดินทางจากโรงแรมไปคณะแพทยศาสตร์ มหาวิทยาลัยเชียงใหม่", location:"โรงแรม Furama และแกรนด์ ชัยพฤกษ์", tag:"travel" },
+  { day:1, time:"09:00", end:"10:30", name:"Hackathon: Pitching phase", location:"ห้องประชุมชั้น 2 อาคารเรียนและปฏิบัติการ 50 ปี", tag:"special" },
+  { day:1, time:"10:30", end:"11:00", name:"พักรับประทานอาหารว่าง", location:"", tag:"free" },
+  { day:1, time:"11:00", end:"12:00", name:"Keynote: Sustainability", location:"", tag:"talk" },
+  { day:1, time:"12:00", end:"13:00", name:"รับประทานอาหารกลางวัน", location:"โถงชั้น 1 อาคารเรียนและปฏิบัติการ 50 ปี", tag:"meal" },
+  { day:1, time:"13:00", end:"18:00", name:"Chiang Mai Tour", location:"เชียงใหม่", tag:"travel" },
+  { day:1, time:"18:00", end:"19:00", name:"เดินทางกลับโรงแรมและพักผ่อนตามอัธยาศัย", location:"โรงแรม Furama และแกรนด์ ชัยพฤกษ์", tag:"free" },
 
   // ── DAY 3 · Sat 16 May 2026 ─────────────────────────────
-  { day:2, time:"08:30", end:"09:00", name:"เดินทางจากโรงแรมไปคณะแพทยศาสตร์ มช.",                                               location:"โรงแรม Furama และแกรนด์ ชัยพฤกษ์",               tag:"travel"   },
-  { day:2, time:"09:00", end:"10:00", name:"Wrap-up Hackathon และข้อสรุปกิจกรรม Ethics under Digital Threats",                   location:"ห้องประชุมชั้น 2 อาคารเรียนและปฏิบัติการ 50 ปี", tag:"workshop" },
-  { day:2, time:"10:00", end:"10:15", name:"พักรับประทานอาหารว่าง",                                                               location:"",                                                tag:"free"     },
-  { day:2, time:"10:15", end:"11:00", name:"Keynote: Update on AI and Social Media Use among Medical Students",                   location:"",                                                tag:"talk"     },
-  { day:2, time:"11:00", end:"12:00", name:"พิธีปิดโครงการค่ายจริยธรรมสัญจรครั้งที่ 23 พร้อมส่งมอบธงแก่เจ้าภาพปีถัดไป",       location:"",                                                tag:"special"  },
-];
+  { day:2, time:"08:30", end:"09:00", name:"เดินทางจากโรงแรมไปคณะแพทยศาสตร์ มหาวิทยาลัยเชียงใหม่", location:"โรงแรม Furama และแกรนด์ ชัยพฤกษ์", tag:"travel" },
+  { day:2, time:"09:00", end:"09:30", name:"ข้อสรุปกิจกรรม Ethics under Digital Threats", location:"ห้องประชุมชั้น 2 อาคารเรียนและปฏิบัติการ 50 ปี", tag:"workshop" },
+  { day:2, time:"09:30", end:"09:45", name:"พักรับประทานอาหารว่าง", location:"", tag:"free" },
+  { day:2, time:"09:45", end:"10:30", name:"Keynote: Update on AI and Social Media Use among Medical Students", location:"", tag:"talk" },
+  { day:2, time:"10:30", end:"11:30", name:"พิธีปิดโครงการค่ายจริยธรรมสัญจรครั้งที่ 23 พร้อมส่งมอบธงแก่เจ้าภาพปีถัดไป", location:"", tag:"special" },
+]
 
-const DAY_LABELS = ["Thu 14/5","Fri 15/5","Sat 16/5"];
-const DAY_LONG   = ["Thursday, 14 May 2026","Friday, 15 May 2026","Saturday, 16 May 2026"];
+
+const TRANSPORT = [
+  // DAY 0 · Wed 13 May 2026 (arrival day)
+  { day:-1, time:"11:30", arrive:"11:50", from:"สนามบิน", to:"Furama", vehicle:"รถตู้", count:1 },
+  { day:-1, time:"11:50", arrive:"12:10", from:"สนามบิน", to:"Furama", vehicle:"รถตู้", count:1 },
+  { day:-1, time:"13:40", arrive:"14:00", from:"สนามบิน", to:"Furama", vehicle:"รถตู้", count:1 },
+  { day:-1, time:"14:40", arrive:"15:00", from:"สนามบิน", to:"Furama", vehicle:"รถตู้", count:1 },
+  { day:-1, time:"16:30", arrive:"16:50", from:"สนามบิน", to:"Furama + แกรนด์ ชัยพฤกษ์", vehicle:"รถบัส 35 คน", count:1 },
+  { day:-1, time:"19:40", arrive:"20:00", from:"สนามบิน", to:"Furama", vehicle:"รถตู้", count:1 },
+  { day:-1, time:"20:35", arrive:"20:55", from:"สนามบิน", to:"Furama", vehicle:"รถตู้", count:1 },
+  { day:-1, time:"20:35", arrive:"20:55", from:"อาเขต", to:"Furama", vehicle:"รถตู้", count:1 },
+  { day:-1, time:"21:00", arrive:"21:20", from:"สนามบิน", to:"Furama", vehicle:"รถตู้", count:1 },
+
+  // DAY 1 · Thu 14 May 2026
+  { day:0, time:"08:30", arrive:"08:45", from:"Furama", to:"อาคารเรียนรวม", vehicle:"รถบัส 40 คน", count:2 },
+  { day:0, time:"08:30", arrive:"08:45", from:"Furama", to:"อาคารเรียนรวม", vehicle:"รถบัส 35 คน", count:2 },
+  { day:0, time:"09:10", arrive:"09:25", from:"Furama", to:"อาคารเรียนรวม", vehicle:"รถบัส 40 คน", count:1 },
+  { day:0, time:"16:00", arrive:"16:15", from:"อาคารเรียนรวม", to:"Furama", vehicle:"รถบัส 40 คน", count:2 },
+  { day:0, time:"16:00", arrive:"16:15", from:"อาคารเรียนรวม", to:"Furama", vehicle:"รถบัส 35 คน", count:2 },
+  { day:0, time:"16:30", arrive:"16:45", from:"อาคารเรียนรวม", to:"Furama", vehicle:"รถบัส 40 คน", count:1 },
+  { day:0, time:"17:15", arrive:"17:30", from:"Furama", to:"หอประชุม มช.", vehicle:"รถบัส 40 คน", count:2 },
+  { day:0, time:"17:15", arrive:"17:30", from:"Furama", to:"หอประชุม มช.", vehicle:"รถบัส 35 คน", count:2 },
+  { day:0, time:"17:45", arrive:"18:00", from:"Furama", to:"หอประชุม มช.", vehicle:"รถบัส 40 คน", count:1 },
+  { day:0, time:"21:10", arrive:"21:25", from:"หอประชุม มช.", to:"Furama", vehicle:"รถบัส 40 คน", count:2 },
+  { day:0, time:"21:10", arrive:"21:25", from:"หอประชุม มช.", to:"Furama", vehicle:"รถบัส 35 คน", count:2 },
+  { day:0, time:"21:20", arrive:"21:35", from:"หอประชุม มช.", to:"Furama", vehicle:"รถบัส 40 คน", count:1 },
+
+  // DAY 2 · Fri 15 May 2026
+  { day:1, time:"08:30", arrive:"08:45", from:"Furama", to:"อาคารเรียนรวม", vehicle:"รถบัส 40 คน", count:2 },
+  { day:1, time:"08:30", arrive:"08:45", from:"Furama", to:"อาคารเรียนรวม", vehicle:"รถบัส 35 คน", count:2 },
+  { day:1, time:"09:10", arrive:"09:25", from:"Furama", to:"อาคารเรียนรวม", vehicle:"รถบัส 40 คน", count:1 },
+
+  // DAY 3 · Sat 16 May 2026
+  { day:2, time:"08:30", arrive:"08:45", from:"Furama", to:"อาคารเรียนรวม", vehicle:"รถบัส 40 คน", count:2 },
+  { day:2, time:"08:30", arrive:"08:45", from:"Furama", to:"อาคารเรียนรวม", vehicle:"รถบัส 35 คน", count:2 },
+  { day:2, time:"09:10", arrive:"09:25", from:"Furama", to:"อาคารเรียนรวม", vehicle:"รถบัส 40 คน", count:1 },
+  { day:2, time:"12:30", arrive:"12:45", from:"อาคารเรียนรวม", to:"สนามบิน", vehicle:"รถบัส 40 คน", count:2 },
+  { day:2, time:"12:30", arrive:"12:45", from:"อาคารเรียนรวม", to:"สนามบิน", vehicle:"รถบัส 35 คน", count:2 },
+  { day:2, time:"13:30", arrive:"13:45", from:"อาคารเรียนรวม", to:"สนามบิน", vehicle:"รถบัส 40 คน", count:2 },
+];
+const DAY_LABELS        = ["Thu 14/5","Fri 15/5","Sat 16/5"];
+const DAY_LONG          = ["Thursday, 14 May 2026","Friday, 15 May 2026","Saturday, 16 May 2026"];
+const TRANSPORT_DAY_LABELS = ["Wed 13/5","Thu 14/5","Fri 15/5","Sat 16/5"];
+const TRANSPORT_DAY_LONG   = ["Wednesday, 13 May 2026","Thursday, 14 May 2026","Friday, 15 May 2026","Saturday, 16 May 2026"];
+const TRANSPORT_DAY_IDX    = [-1, 0, 1, 2]; // maps tab index → TRANSPORT.day value
 const DRESS_CODE = [
   { icon:"👔", text:"ชุดสุภาพ (Smart Casual)", en:"Smart Casual — formal dress not required" },
   { icon:"👕", text:"เสื้อค่าย",                en:"Camp Shirt"                                },
@@ -1195,6 +1271,13 @@ const campDay = () => {
   const diff = Math.floor((new Date() - CAMP_START) / 86400000);
   return (diff >= 0 && diff <= 2) ? diff : -1; // -1 = outside camp dates
 };
+const transportDay = () => {
+  // Returns -1 for May 13, 0/1/2 for May 14-16, null otherwise
+  const diff = Math.floor((new Date() - CAMP_START) / 86400000);
+  if (diff === -1) return -1; // May 13
+  if (diff >= 0 && diff <= 2) return diff; // May 14-16
+  return null; // outside transport dates
+};
 const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
 const TAG_COLOR = { talk:'#1ABFA0', workshop:'#A98BD4', meal:'#F5C842', free:'#888', travel:'#F27C1E', special:'#C97CC4' };
@@ -1209,6 +1292,7 @@ function goTo(name, btn) {
   if (btn && btn.classList.contains('nav-btn')) btn.classList.add('active');
   if (name === 'schedule') {
     activeDay = campDay() === -1 ? 0 : campDay();
+    activeSubTab = 'events'; setSubTab('events');
     renderSchedule(campDay() !== -1);
   } else if (name === 'map') {
     document.getElementById('screen-map').scrollTop = 0;
@@ -1253,7 +1337,8 @@ function renderHomeSchedule() {
       </div>
     </div>`).join('');
     document.getElementById('home-schedule').innerHTML = previewRows +
-      `<div style="font-size:12px;color:var(--text-3);margin-top:8px;">Thu 14 May 2026 · Live updates on the day</div>`;
+      `<div style="font-size:12px;color:var(--text-3);margin-top:8px;">Thu 14 May 2026 · Live updates on the day</div>` +
+      `<div class="ann-preview-more" onclick="goTo('schedule',document.getElementById('nav-schedule'))">View all events</div>`;
     return;
   }
 
@@ -1293,9 +1378,89 @@ function renderHomeSchedule() {
     </div>`;
   }).join('');
 
-  document.getElementById('home-schedule').innerHTML = rows || '<div style="color:var(--text-2);font-size:14px">No sessions today</div>';
+  document.getElementById('home-schedule').innerHTML = (rows || '<div style="color:var(--text-2);font-size:14px">No sessions today</div>') + '<div class="ann-preview-more" onclick="goTo(\'schedule\',document.getElementById(\'nav-schedule\'))">View all events</div>';
 }
 
+
+// ════════════════════════════════════════════════════════
+// HOME — next bus preview
+// ════════════════════════════════════════════════════════
+function fmtDuration(mins) {
+  if (mins < 60) return mins + ' นาที';
+  var h = Math.floor(mins / 60), m = mins % 60;
+  return h + ' ชม.' + (m > 0 ? ' ' + m + ' นาที' : '');
+}
+
+function renderNextBus() {
+  var el = document.getElementById('next-bus');
+  var label = document.getElementById('next-bus-label');
+  var card = document.getElementById('next-bus-card');
+  if (!el || !label || !card) return;
+
+  // Always show the card
+  label.style.display = '';
+  card.style.display = '';
+
+  var cd = campDay();
+  var td = transportDay();
+  var nm = nowMin();
+  var html = '';
+
+  // Before transport period — show first bus of May 13
+  if (td === null) {
+    var firstBuses = TRANSPORT.filter(function(t) { return t.day === -1; });
+    if (firstBuses.length === 0) { el.innerHTML = '<div style="font-size:13px;color:var(--text-3);">ไม่มีข้อมูลรอบรถ</div>'; return; }
+    var nextTime = firstBuses[0].time;
+    var buses = firstBuses.filter(function(t) { return t.time === nextTime; });
+    html = buildBusCard(buses, nextTime, null, 'Upcoming · Wed 13 May', 'var(--text-2)');
+    el.innerHTML = html;
+    return;
+  }
+
+  // On a transport day — find next departure after now
+  var allToday = TRANSPORT.filter(function(t) { return t.day === td; });
+  var upcoming = allToday.filter(function(t) { return toMin(t.time) > nm; });
+
+  if (upcoming.length === 0) {
+    // No more buses today
+    var lastBus = allToday.length > 0 ? allToday[allToday.length - 1] : null;
+    var noMoreHtml = '<div style="display:flex;align-items:center;gap:12px;">' +
+      '<svg viewBox="0 0 24 24" style="width:28px;height:28px;stroke:var(--text-3);stroke-width:1.8;fill:none;flex-shrink:0;"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>' +
+      '<div style="flex:1">' +
+        '<div style="font-size:14px;font-weight:600;color:var(--text-2);">ไม่มีรอบรถแล้วในวันนี้</div>' +
+        (lastBus ? '<div style="font-size:12px;color:var(--text-3);margin-top:2px;">รอบสุดท้าย ' + lastBus.time + ' · ' + esc(lastBus.from) + ' → ' + esc(lastBus.to) + '</div>' : '') +
+      '</div>' +
+    '</div>';
+    el.innerHTML = noMoreHtml + '<div class="ann-preview-more" style="margin-top:8px" onclick="goTo(\'schedule\',document.getElementById(\'nav-schedule\'));setTimeout(function(){setSubTab(\'transport\')},80);">View all buses</div>';
+    return;
+  }
+
+  // Show next bus
+  var nextTime = upcoming[0].time;
+  var buses = upcoming.filter(function(t) { return t.time === nextTime; });
+  var minsUntil = toMin(nextTime) - nm;
+  var urgentColor = minsUntil <= 10 ? 'var(--red)' : minsUntil <= 20 ? 'var(--yellow)' : 'var(--teal)';
+  var badge = 'ใน ' + fmtDuration(minsUntil);
+  el.innerHTML = buildBusCard(buses, nextTime, badge, null, urgentColor);
+}
+
+function buildBusCard(buses, nextTime, badge, labelOverride, accentColor) {
+  var timeHtml = '<span style="font-size:22px;font-weight:700;font-family:Inter,monospace;color:' + accentColor + ';">' + nextTime + '</span>';
+  if (buses[0].arrive) timeHtml += '<span style="font-size:12px;color:var(--text-3);margin-left:6px;">→ ' + buses[0].arrive + '</span>';
+  if (badge) timeHtml += '<span style="font-size:12px;font-weight:600;color:' + accentColor + ';background:rgba(26,191,160,.1);padding:1px 8px;border-radius:20px;margin-left:6px;">' + badge + '</span>';
+  if (labelOverride) timeHtml += '<span style="font-size:12px;color:var(--text-3);margin-left:6px;">' + labelOverride + '</span>';
+  return '<div style="display:flex;align-items:center;gap:12px;">' +
+    '<div style="flex:1">' +
+      '<div style="display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;">' + timeHtml + '</div>' +
+      '<div style="font-size:14px;font-weight:600;color:var(--text);margin-top:3px;">' + esc(buses[0].from) + ' → ' + esc(buses[0].to) + '</div>' +
+      '<div style="font-size:12px;color:var(--text-3);margin-top:2px;">' +
+        buses.map(function(b){ return esc(b.vehicle) + (b.count>1?' ×'+b.count:''); }).join(' · ') +
+      '</div>' +
+    '</div>' +
+    '<svg viewBox="0 0 24 24" style="width:28px;height:28px;stroke:' + accentColor + ';stroke-width:1.8;fill:none;flex-shrink:0;"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>' +
+  '</div>' +
+  '<div class="ann-preview-more" style="margin-top:8px" onclick="goTo(\'schedule\',document.getElementById(\'nav-schedule\'));setTimeout(function(){setSubTab(\'transport\')},80);">View all buses</div>';
+}
 // HOME — latest announcement
 function renderHomeAnnounce() {
   const a = ANNOUNCEMENTS[0];
@@ -1354,6 +1519,7 @@ function renderSOS() {
           ${esc(c.number)}${c.nickname ? ' ('+esc(c.nickname)+')' : ''}
         </a>
         ${c.number2 ? '<a class="call-btn call-btn-dim" href="tel:'+c.number2.replace(/[-\s]/g,'')+'"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .18h3a2 2 0 012 1.72c.13 1 .37 1.97.72 2.91a2 2 0 01-.45 2.11L6.09 8.09a16 16 0 006.29 6.29l1.27-1.27a2 2 0 012.11-.45c.94.35 1.91.59 2.91.72a2 2 0 011.72 2.04z"/></svg>'+esc(c.number2)+(c.nickname2?' ('+esc(c.nickname2)+')':'')+'</a>' : ''}
+        ${c.number3 ? '<a class="call-btn call-btn-dim" href="tel:'+c.number3.replace(/[-\s]/g,'')+'"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .18h3a2 2 0 012 1.72c.13 1 .37 1.97.72 2.91a2 2 0 01-.45 2.11L6.09 8.09a16 16 0 006.29 6.29l1.27-1.27a2 2 0 012.11-.45c.94.35 1.91.59 2.91.72a2 2 0 011.72 2.04z"/></svg>'+esc(c.number3)+(c.nickname3?' ('+esc(c.nickname3)+')':'')+'</a>' : ''}
       </div>
     </div>`).join('');
 
@@ -1394,7 +1560,7 @@ function renderSchedule(scrollToCurrent) {
   var dc = DRESS_CODE[activeDay];
   var dcEl = document.getElementById('sched-dresscode');
   if (dcEl && dc) {
-    dcEl.innerHTML = '<span style="margin-right:6px">' + dc.icon + '</span><span style="color:var(--text);font-weight:600">' + dc.text + '</span><span style="color:var(--text-3);font-size:11px;margin-left:6px">— ' + dc.en + '</span>';
+    dcEl.innerHTML = '<span style="color:var(--text-2);margin-right:4px">Dress code:</span><span style="color:var(--text);font-weight:600">' + dc.text + '</span><span style="color:var(--text-3);font-size:11px;margin-left:6px">— ' + dc.en + '</span>';
   }
 
   const items = SCHEDULE.filter(s=>s.day===activeDay);
@@ -1439,7 +1605,106 @@ function renderSchedule(scrollToCurrent) {
   }
 }
 
-function setDay(i) { activeDay=i; renderSchedule(false); }
+function setDay(i) { activeDay=i; renderSchedule(activeSubTab === 'events' && campDay() !== -1); if (activeSubTab === 'transport') renderTransport(campDay() !== -1); }
+
+// ════════════════════════════════════════════════════════
+// SCHEDULE SUB-TABS
+// ════════════════════════════════════════════════════════
+var activeSubTab = 'events';
+
+var activeTransportDay = 0; // index into TRANSPORT_DAY_IDX
+
+function setSubTab(tab) {
+  activeSubTab = tab;
+  document.getElementById('subtab-events').classList.toggle('active', tab === 'events');
+  document.getElementById('subtab-transport').classList.toggle('active', tab === 'transport');
+  document.getElementById('events-wrap').style.display = tab === 'events' ? '' : 'none';
+  document.getElementById('transport-wrap').style.display = tab === 'transport' ? '' : 'none';
+  if (tab === 'transport') {
+    // Default to today's transport day, or Thu 14 if outside transport dates
+    var td = transportDay();
+    if (td === -1) activeTransportDay = 0;       // May 13 → Wed tab
+    else if (td !== null) activeTransportDay = td + 1; // May 14-16 → Thu/Fri/Sat tab
+    else activeTransportDay = 1;                 // outside → default Thu
+    if (activeTransportDay > 3) activeTransportDay = 3;
+    renderTransportDay(transportDay() !== null);
+  }
+}
+
+function renderTransportDay(scrollToCurrent) {
+  var dayVal = TRANSPORT_DAY_IDX[activeTransportDay];
+  // Render day tabs
+  document.getElementById('transport-day-tabs').innerHTML = TRANSPORT_DAY_LABELS.map((d,i)=>
+    '<button class="day-tab' + (i===activeTransportDay?' active':'') + '" onclick="setTransportDay(' + i + ')">' + d + '</button>'
+  ).join('');
+  document.getElementById('transport-date').textContent = TRANSPORT_DAY_LONG[activeTransportDay];
+  renderTransport(scrollToCurrent, dayVal);
+}
+
+function setTransportDay(i) {
+  activeTransportDay = i;
+  var dayVal = TRANSPORT_DAY_IDX[i];
+  renderTransportDay(transportDay() !== null && dayVal === transportDay());
+}
+
+function renderTransport(scrollToCurrent, dayVal) {
+  if (dayVal === undefined) dayVal = TRANSPORT_DAY_IDX[activeTransportDay];
+  var items = TRANSPORT.filter(function(t) { return t.day === dayVal; });
+  var isToday = transportDay() !== null && dayVal === transportDay();
+  var nm = nowMin();
+  var nowIdx = -1;
+  for (var i = 0; i < items.length; i++) {
+    var t = items[i];
+    var end = i + 1 < items.length ? toMin(items[i+1].time) : toMin(t.time) + 60;
+    if (isToday && nm >= toMin(t.time) && nm < end) { nowIdx = i; break; }
+  }
+  var html = '<div style="padding:12px 16px 0;display:flex;flex-direction:column;gap:10px;">';
+  for (var i = 0; i < items.length; i++) {
+    var t = items[i];
+    var isNow = isToday && i === nowIdx;
+    var cardBorder = isNow ? 'border:1.5px solid var(--teal);' : 'border:1px solid var(--border);';
+    var cardBg = isNow ? 'background:rgba(26,191,160,.06);' : 'background:var(--bg-card);';
+    var nowBadge = isNow ? '<span style="font-size:10px;font-weight:700;color:var(--teal);background:var(--teal-dim);border:1px solid rgba(26,191,160,.25);border-radius:20px;padding:1px 8px;margin-left:6px;">Now</span>' : '';
+    html += '<div style="' + cardBorder + cardBg + 'border-radius:14px;padding:14px 16px;">' +
+      // Times row
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">' +
+        '<div style="text-align:left;">' +
+          '<div style="font-size:22px;font-weight:700;font-family:Inter,monospace;color:' + (isNow ? 'var(--teal)' : 'var(--text)') + ';">' + esc(t.time) + '</div>' +
+          '<div style="font-size:12px;color:var(--text-2);margin-top:1px;">' + esc(t.from) + '</div>' +
+        '</div>' +
+        // Center arrow
+        '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:0 10px;">' +
+          '<div style="font-size:11px;color:var(--text-3);">~' + (t.arrive ? (function(a,b){var d=toMin(a)-toMin(b);return d>0?d:15;})(t.arrive,t.time) : 15) + ' นาที</div>' +
+          '<div style="display:flex;align-items:center;width:100%;">' +
+            '<div style="flex:1;height:1px;background:var(--border);"></div>' +
+            '<svg viewBox="0 0 24 10" style="width:32px;height:12px;fill:var(--text-2);flex-shrink:0;"><path d="M2 5h15l-3-3 1-1 5 4-5 4-1-1 3-3H2z"/></svg>' +
+          '</div>' +
+          '<div style="font-size:11px;color:var(--text-3);">' + esc(t.vehicle) + '</div>' +
+        '</div>' +
+        '<div style="text-align:right;">' +
+          '<div style="font-size:22px;font-weight:700;font-family:Inter,monospace;color:' + (isNow ? 'var(--teal)' : 'var(--text)') + ';">' + (t.arrive || '—') + '</div>' +
+          '<div style="font-size:12px;color:var(--text-2);margin-top:1px;">' + esc(t.to) + '</div>' +
+        '</div>' +
+      '</div>' +
+      // Bottom row — vehicle + count + now badge
+      '<div style="display:flex;align-items:center;gap:6px;padding-top:8px;border-top:1px solid var(--border-lt);">' +
+        '<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--text-3);stroke-width:2;fill:none;flex-shrink:0;"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>' +
+        '<span style="font-size:12px;color:var(--text-3);">' + t.count + ' คัน</span>' +
+        nowBadge +
+      '</div>' +
+    '</div>';
+  }
+  html += '</div>';
+  document.getElementById('transport-tl').innerHTML = html || '<div style="padding:20px 16px;color:var(--text-3);font-size:14px;text-align:center;">ไม่มีรอบรถในวันนี้</div>';
+  if (scrollToCurrent && nowIdx >= 0) {
+    setTimeout(function() {
+      var cards = document.querySelectorAll('#transport-tl > div > div');
+      var screen = document.getElementById('screen-schedule');
+      if (cards[nowIdx] && screen) screen.scrollTop = cards[nowIdx].offsetTop - 100;
+    }, 60);
+  }
+}
+
 
 // ════════════════════════════════════════════════════════
 // PRO-TIP BANNER
@@ -1499,7 +1764,7 @@ function handleFab() {
     }, 4000);
   } else {
     // Confirmed — open reflection form
-    window.open('https://forms.google.com', '_blank');
+    window.open('https://forms.gle/iAJacZBPELDZKrYM6', '_blank');
     resetFab();
   }
 }
@@ -1701,12 +1966,13 @@ document.addEventListener('DOMContentLoaded', function() {
     el.addEventListener('touchmove', function(){}, {passive: true});
   });
   renderHomeSchedule();
+  renderNextBus();
   renderHomeAnnounce();
   renderAnnouncements();
   renderSOS();
   renderSchedule(true);
   renderRoute();
-  setInterval(renderHomeSchedule, 60000);
+  setInterval(function(){ renderHomeSchedule(); renderNextBus(); }, 60000);
   setInterval(()=>{ if(campDay()!==-1 && activeDay===campDay()) renderSchedule(false); }, 60000);
 
   if ('serviceWorker' in navigator) {
