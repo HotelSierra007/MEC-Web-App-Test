@@ -17,6 +17,9 @@
   <link rel="preload" href="aed_sj1.jpg" as="image"/>
   <link rel="preload" href="aed_sj15.jpg" as="image"/>
   <link rel="preload" href="aed_dorm.jpg" as="image"/>
+  <link rel="preload" href="aed_rr1.jpg" as="image"/>
+  <link rel="preconnect" href="https://www.google.com" crossorigin/>
+  <link rel="dns-prefetch" href="https://www.google.com"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 
@@ -723,18 +726,21 @@
     .sched-subtab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
     /* Transport rows */
-    .transport-tl { padding-bottom: 8px; contain: layout style; }
-    #events-wrap, #transport-wrap { contain: layout style; }
+    .transport-tl { padding-bottom: 8px; contain: content; }
+    #events-wrap, #transport-wrap { contain: content; }
 
     /* ─── TRANSPORT CARDS ───────────────────────────────── */
-    .tc { border-radius:14px; padding:14px 16px; margin-bottom:0; background:var(--bg-card); border:1px solid var(--border); }
-    .tc.now { background:rgba(26,191,160,.06); border-color:var(--teal); border-width:1.5px; }
+    .tc { border-radius:14px; padding:14px 16px; margin-bottom:0; background:var(--bg-card); border:1px solid var(--border); contain: content; }
+    /* box-shadow instead of border-width so .tc.now never triggers a layout reflow */
+    .tc.now      { background:rgba(26,191,160,.06);  border-color:var(--teal);   box-shadow:inset 0 0 0 0.5px var(--teal); }
+    .tc.upcoming { background:rgba(245,200,66,.05);  border-color:var(--yellow); box-shadow:inset 0 0 0 0.5px var(--yellow); }
     .tc-times { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
     .tc-dep, .tc-arr { min-width:0; max-width:38%; }
     .tc-dep { text-align:left; }
     .tc-arr { text-align:right; }
     .tc-time { font-size:22px; font-weight:700; font-family:'Inter',monospace; color:var(--text); line-height:1.1; }
-    .tc-time.now { color:var(--teal); }
+    .tc-time.now      { color:var(--teal); }
+    .tc-time.upcoming { color:var(--yellow); }
     .tc-place { font-size:12px; color:var(--text-2); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:100%; }
     .tc-mid { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:0 8px; }
     .tc-mid-dur { font-size:11px; color:var(--text-3); }
@@ -744,7 +750,8 @@
     .tc-footer { display:flex; align-items:center; gap:6px; padding-top:8px; border-top:1px solid var(--border-lt); }
     .tc-footer svg { width:14px; height:14px; stroke:var(--text-3); stroke-width:2; fill:none; flex-shrink:0; }
     .tc-footer-txt { font-size:12px; color:var(--text-3); }
-    .tc-now-badge { font-size:10px; font-weight:700; color:var(--teal); background:var(--teal-dim); border:1px solid rgba(26,191,160,.25); border-radius:20px; padding:1px 8px; margin-left:auto; }
+    .tc-now-badge      { font-size:10px; font-weight:700; color:var(--teal);   background:var(--teal-dim);              border:1px solid rgba(26,191,160,.25);  border-radius:20px; padding:1px 8px; margin-left:auto; }
+    .tc-upcoming-badge { font-size:10px; font-weight:700; color:var(--yellow); background:rgba(245,200,66,.1);          border:1px solid rgba(245,200,66,.3);   border-radius:20px; padding:1px 8px; margin-left:auto; }
     .tc-wrap { padding:12px 16px 0; display:flex; flex-direction:column; gap:10px; }
 
     /* ── CAMPUS NETWORK CHECK ──────────────────────────────── */
@@ -901,7 +908,7 @@
             <svg class="acc-chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
           <div class="acc-body">
-            <div style="font-size:13px;color:var(--text-3);padding:4px 0">ไม่มีภาพ</div>
+            <img src="aed_rr1.jpg" style="width:100%;border-radius:8px;margin-top:4px;aspect-ratio:4/3;object-fit:cover" loading="eager" decoding="async" alt="AED อาคารเรียนรวม หน้า Amazon ชั้น 1"/>
           </div>
         </div>
         <div class="acc-item" id="aed-2">
@@ -1068,7 +1075,7 @@
           <div class="wf-toilet-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--teal)"><rect x="7" y="2" width="10" height="5" rx="1"/><path d="M6 7h12v2H6z"/><path d="M5 9c0 5 2 8 7 8s7-3 7-8H5z"/><path d="M9 17v3M15 17v3M8 20h8"/></svg></div>
           <div class="wf-toilet-body">
             <div class="wf-toilet-name">อาคารสุจิณโณ</div>
-            <div class="wf-toilet-detail">กรุณาใช้ห้องน้ำบริเวณอาคารข้างเคียง <span class="wf-tip">(เฉพาะชั้น 1 เท่านั้น)</span></div>
+            <div class="wf-toilet-detail">กรุณาใช้ห้องน้ำบริเวณอาคารข้างเคียง <span class="wf-tip">(เฉพาะชั้น 15 เท่านั้น)</span></div>
           </div>
         </div>
       </div>
@@ -1277,7 +1284,7 @@ const CONTACTS = [
   { name:"Head of First Aid", role:"สำหรับยาหรือการปฐมพยาบาลเบื้องต้น", number:"0947356446", nickname:"ป๊อปปี้", sos:true },
   { name:"Head of GM",        role:"สำหรับปัญหาทั่วไปอื่น ๆ",            number:"0954138316", nickname:"ปอไหม",   sos:false },
   { name:"President",         role:"สำหรับปัญหาใหญ่",                    number:"0624358844", nickname:"ณัฐส้ม",  sos:false },
-  { name:"เจ้าหน้าที่ประสานงานโครงการ", role:"สามารถติดต่อพี่ปรามได้ 24 ชั่วโมง", number:"0873032508", number2:"0899987627", number3:"0612683942", nickname:"พี่ขวัญ", nickname2:"พี่จีน", nickname3:"พี่ปราม", sos:false },
+  { name:"เจ้าหน้าที่ประสานงานโครงการ", role:"สามารถติดต่อพี่ปรามได้ 24 ชั่วโมง", roleHtml:'สามารถติดต่อพี่ปรามได้ <span style="color:var(--red)">24 ชั่วโมง</span>', number:"0873032508", number2:"0899987627", number3:"0612683942", nickname:"พี่ขวัญ", nickname2:"พี่จีน", nickname3:"พี่ปราม", sos:false },
   { name:"Subcommittee's GM", role:"สำหรับติดต่อผู้ดูแลคณะอนุกรรมการ",  number:"0947743464", nickname:"จูเนียร์", sos:false },
   { name:"CMU Security",      role:"สำหรับติดต่อ รปภ.",                  number:"053935500",  nickname:null,      sos:false },
 ];
@@ -1716,7 +1723,7 @@ function renderSOS() {
     <div class="contact-row">
       <div class="contact-info">
         <div class="contact-name">${esc(c.name)}</div>
-        <div class="contact-role">${esc(c.role)}</div>
+        <div class="contact-role">${c.roleHtml || esc(c.role)}</div>
       </div>
       <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
         <a class="call-btn ${c.sos?'call-btn-red':'call-btn-dim'}" href="tel:${c.number.replace(/[-\s]/g,'')}">
@@ -1889,21 +1896,27 @@ function renderTransport(scrollToCurrent, dayVal) {
   var items = TRANSPORT.filter(function(t) { return t.day === dayVal; });
   var isToday = transportDay() !== null && dayVal === transportDay();
   var nm = nowMin();
-  var nowIdx = -1;
+  var dur = function(t) { var d = t.arrive ? toMin(t.arrive)-toMin(t.time) : 15; return d > 0 ? d : 15; };
+  // nowIdx: bus currently in transit (departed but not yet arrived)
+  // upcomingIdx: first bus that hasn't departed yet
+  var nowIdx = -1, upcomingIdx = -1;
   for (var i = 0; i < items.length; i++) {
     var t = items[i];
-    var end = i + 1 < items.length ? toMin(items[i+1].time) : toMin(t.time) + 60;
-    if (isToday && nm >= toMin(t.time) && nm < end) { nowIdx = i; break; }
+    var dep = toMin(t.time);
+    var arr = dep + dur(t);
+    if (isToday && nowIdx < 0 && nm >= dep && nm < arr) nowIdx = i;
+    if (isToday && upcomingIdx < 0 && dep > nm) upcomingIdx = i;
   }
-  var dur = function(t) { var d = t.arrive ? toMin(t.arrive)-toMin(t.time) : 15; return d > 0 ? d : 15; };
   var html = '<div class="tc-wrap">';
   for (var i = 0; i < items.length; i++) {
     var t = items[i];
     var isNow = isToday && i === nowIdx;
-    html += '<div class="tc' + (isNow?' now':'') + '">' +
+    var isUpcoming = isToday && i === upcomingIdx;
+    var stateClass = isNow ? ' now' : (isUpcoming ? ' upcoming' : '');
+    html += '<div class="tc' + stateClass + '">' +
       '<div class="tc-times">' +
         '<div class="tc-dep">' +
-          '<div class="tc-time' + (isNow?' now':'') + '">' + esc(t.time) + '</div>' +
+          '<div class="tc-time' + stateClass + '">' + esc(t.time) + '</div>' +
           '<div class="tc-place">' + esc(t.from) + '</div>' +
         '</div>' +
         '<div class="tc-mid">' +
@@ -1914,14 +1927,15 @@ function renderTransport(scrollToCurrent, dayVal) {
           '<div class="tc-mid-veh">' + esc(t.vehicle) + '</div>' +
         '</div>' +
         '<div class="tc-arr">' +
-          '<div class="tc-time' + (isNow?' now':'') + '">' + (t.arrive||'—') + '</div>' +
+          '<div class="tc-time' + stateClass + '">' + (t.arrive||'—') + '</div>' +
           '<div class="tc-place" style="text-align:right">' + esc(t.to) + '</div>' +
         '</div>' +
       '</div>' +
       '<div class="tc-footer">' +
         '<svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>' +
         '<span class="tc-footer-txt">' + t.count + ' คัน</span>' +
-        (isNow ? '<span class="tc-now-badge">Now</span>' : '') +
+        (isNow      ? '<span class="tc-now-badge">Now</span>'           : '') +
+        (isUpcoming ? '<span class="tc-upcoming-badge">Upcoming</span>' : '') +
       '</div>' +
     '</div>';
   }
@@ -1933,11 +1947,12 @@ function renderTransport(scrollToCurrent, dayVal) {
     tl.addEventListener('touchstart', function(){}, {passive: true});
     tl.addEventListener('touchmove', function(){}, {passive: true});
   }
-  if (scrollToCurrent && nowIdx >= 0) {
+  var scrollIdx = upcomingIdx >= 0 ? upcomingIdx : nowIdx;
+  if (scrollToCurrent && scrollIdx >= 0) {
     setTimeout(function() {
       var cards = document.querySelectorAll('#transport-tl .tc');
       var screen = document.getElementById('screen-schedule');
-      if (cards[nowIdx] && screen) screen.scrollTop = cards[nowIdx].offsetTop - 100;
+      if (cards[scrollIdx] && screen) screen.scrollTop = cards[scrollIdx].offsetTop - 100;
     }, 60);
   }
 }
@@ -2422,6 +2437,16 @@ document.addEventListener('DOMContentLoaded', function() {
   // Check if user is on campus network; prompt Eduroam guide if not.
   checkCampusNetwork();
 
+  // Warm the browser cache for Eduroam institution logos while idle on the home screen.
+  ric(function() {
+    EDUROAM_INSTITUTIONS.forEach(function(inst) {
+      if (!inst.logo) return;
+      var img = new Image();
+      img.decoding = 'async';
+      img.src = inst.logo;
+    });
+  });
+
   // Then refresh announcements from /data.json (live).
   loadAnnouncements();
 
@@ -2435,8 +2460,10 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Periodic refresh: schedule/bus every 60s, announcements every 5min.
-  setInterval(function(){ renderHomeSchedule(); renderNextBus(); }, 60000);
-  setInterval(function(){ if(campDay()!==-1 && activeDay===campDay()) renderSchedule(false); }, 60000);
+  // requestIdleCallback defers DOM work until the browser is idle (not mid-scroll).
+  var ric = window.requestIdleCallback ? window.requestIdleCallback.bind(window) : function(cb){ setTimeout(cb, 1); };
+  setInterval(function(){ ric(function(){ renderHomeSchedule(); renderNextBus(); }); }, 60000);
+  setInterval(function(){ ric(function(){ if(campDay()!==-1 && activeDay===campDay()) renderSchedule(false); }); }, 60000);
   setInterval(loadAnnouncements, 5 * 60 * 1000);
 
   // Refresh announcements when the app is brought back to the foreground.
