@@ -750,8 +750,18 @@
     .tc-footer { display:flex; align-items:center; gap:6px; padding-top:8px; border-top:1px solid var(--border-lt); }
     .tc-footer svg { width:14px; height:14px; stroke:var(--text-3); stroke-width:2; fill:none; flex-shrink:0; }
     .tc-footer-txt { font-size:12px; color:var(--text-3); }
-    .tc-now-badge      { font-size:10px; font-weight:700; color:var(--teal);   background:var(--teal-dim);              border:1px solid rgba(26,191,160,.25);  border-radius:20px; padding:1px 8px; margin-left:auto; }
-    .tc-upcoming-badge { font-size:10px; font-weight:700; color:var(--yellow); background:rgba(245,200,66,.1);          border:1px solid rgba(245,200,66,.3);   border-radius:20px; padding:1px 8px; margin-left:auto; }
+    .tc-now-badge        { font-size:10px; font-weight:700; color:var(--teal);   background:var(--teal-dim);           border:1px solid rgba(26,191,160,.25);  border-radius:20px; padding:1px 8px; margin-left:auto; }
+    .tc-upcoming-badge   { font-size:10px; font-weight:700; color:var(--yellow); background:rgba(245,200,66,.1);       border:1px solid rgba(245,200,66,.3);   border-radius:20px; padding:1px 8px; margin-left:auto; }
+    .tc-cancelled-badge  { font-size:10px; font-weight:700; color:var(--red);    background:var(--red-dim);            border:1px solid rgba(239,68,68,.3);    border-radius:20px; padding:1px 8px; margin-left:auto; }
+    .tc-delayed-badge    { font-size:10px; font-weight:700; color:var(--yellow); background:rgba(245,200,66,.12);      border:1px solid rgba(245,200,66,.3);   border-radius:20px; padding:1px 8px; margin-left:auto; }
+    .tc.tc-cancelled { opacity:.55; background:rgba(239,68,68,.04); border-color:rgba(239,68,68,.25); }
+    .tc.tc-cancelled .tc-time,
+    .tc.tc-cancelled .tc-place { text-decoration:line-through; text-decoration-thickness:1.5px; }
+    .tc.tc-delayed { background:rgba(245,200,66,.05); border-color:rgba(245,200,66,.35); }
+    .tc-notes { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text-2); margin-top:8px; padding-top:8px; border-top:1px solid var(--border-lt); line-height:1.45; }
+    .tc-notes svg { width:13px; height:13px; flex-shrink:0; }
+    .tc.tc-delayed .tc-notes   { color:var(--yellow); }
+    .tc.tc-cancelled .tc-notes { color:var(--red); opacity:.9; }
     .tc-wrap { padding:12px 16px 0; display:flex; flex-direction:column; gap:10px; }
 
     /* ── CAMPUS NETWORK CHECK ──────────────────────────────── */
@@ -1624,7 +1634,7 @@ function renderNextBus() {
 
   // Before transport period — show first bus of May 13
   if (td === null) {
-    var firstBuses = TRANSPORT.filter(function(t) { return t.day === -1; });
+    var firstBuses = TRANSPORT.filter(function(t) { return t.day === -1 && t.status !== 'cancelled'; });
     if (firstBuses.length === 0) { el.innerHTML = '<div style="font-size:13px;color:var(--text-3);">ไม่มีข้อมูลรอบรถ</div>'; return; }
     var nextTime = firstBuses[0].time;
     var buses = firstBuses.filter(function(t) { return t.time === nextTime; });
@@ -1633,9 +1643,9 @@ function renderNextBus() {
     return;
   }
 
-  // On a transport day — find next departure after now
+  // On a transport day — find next departure after now, skipping cancelled rows
   var allToday = TRANSPORT.filter(function(t) { return t.day === td; });
-  var upcoming = allToday.filter(function(t) { return toMin(t.time) > nm; });
+  var upcoming = allToday.filter(function(t) { return toMin(t.time) > nm && t.status !== 'cancelled'; });
 
   if (upcoming.length === 0) {
     // No more buses today
@@ -1655,9 +1665,16 @@ function renderNextBus() {
   var nextTime = upcoming[0].time;
   var buses = upcoming.filter(function(t) { return t.time === nextTime; });
   var minsUntil = toMin(nextTime) - nm;
-  var urgentColor = minsUntil <= 10 ? 'var(--red)' : minsUntil <= 20 ? 'var(--yellow)' : 'var(--teal)';
+  var isDelayedNext = buses.some(function(t) { return t.status === 'delayed'; });
+  var urgentColor = isDelayedNext ? 'var(--yellow)' : minsUntil <= 10 ? 'var(--red)' : minsUntil <= 20 ? 'var(--yellow)' : 'var(--teal)';
   var badge = 'ใน ' + fmtDuration(minsUntil);
-  el.innerHTML = buildBusCard(buses, nextTime, badge, null, urgentColor);
+  var busHtml = buildBusCard(buses, nextTime, badge, null, urgentColor);
+  // Append delay note if any bus in this slot is delayed
+  var delayNotes = buses.filter(function(t) { return t.status === 'delayed' && t.notes; }).map(function(t) { return esc(t.notes); });
+  if (delayNotes.length) {
+    busHtml += '<div style="display:flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;color:var(--yellow);"><svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>' + delayNotes.join(' · ') + '</div>';
+  }
+  el.innerHTML = busHtml;
 }
 
 function buildBusCard(buses, nextTime, badge, labelOverride, accentColor) {
@@ -1904,11 +1921,12 @@ function renderTransport(scrollToCurrent, dayVal) {
   var isToday = transportDay() !== null && dayVal === transportDay();
   var nm = nowMin();
   var dur = function(t) { var d = t.arrive ? toMin(t.arrive)-toMin(t.time) : 15; return d > 0 ? d : 15; };
-  // nowIdx: bus currently in transit (departed but not yet arrived)
-  // upcomingIdx: first bus that hasn't departed yet
+  var warningIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  // nowIdx / upcomingIdx: skip cancelled rows — they are never "current" or "next"
   var nowIdx = -1, upcomingIdx = -1;
   for (var i = 0; i < items.length; i++) {
     var t = items[i];
+    if (t.status === 'cancelled') continue;
     var dep = toMin(t.time);
     var arr = dep + dur(t);
     if (isToday && nowIdx < 0 && nm >= dep && nm < arr) nowIdx = i;
@@ -1917,13 +1935,19 @@ function renderTransport(scrollToCurrent, dayVal) {
   var html = '<div class="tc-wrap">';
   for (var i = 0; i < items.length; i++) {
     var t = items[i];
-    var isNow = isToday && i === nowIdx;
-    var isUpcoming = isToday && i === upcomingIdx;
-    var stateClass = isNow ? ' now' : (isUpcoming ? ' upcoming' : '');
-    html += '<div class="tc' + stateClass + '">' +
+    var isCancelled = t.status === 'cancelled';
+    var isDelayed   = t.status === 'delayed';
+    var isNow       = isToday && i === nowIdx;
+    var isUpcoming  = isToday && i === upcomingIdx;
+    var extraClass  = isCancelled ? ' tc-cancelled' : (isDelayed ? ' tc-delayed' : '');
+    var stateClass  = (isCancelled || isDelayed) ? '' : (isNow ? ' now' : (isUpcoming ? ' upcoming' : ''));
+    var timeClass   = (isCancelled || isDelayed) ? '' : stateClass;
+    var notesHtml   = (t.notes && (isCancelled || isDelayed))
+      ? '<div class="tc-notes">' + warningIcon + esc(t.notes) + '</div>' : '';
+    html += '<div class="tc' + extraClass + stateClass + '">' +
       '<div class="tc-times">' +
         '<div class="tc-dep">' +
-          '<div class="tc-time' + stateClass + '">' + esc(t.time) + '</div>' +
+          '<div class="tc-time' + timeClass + '">' + esc(t.time) + '</div>' +
           '<div class="tc-place">' + esc(t.from) + '</div>' +
         '</div>' +
         '<div class="tc-mid">' +
@@ -1934,15 +1958,18 @@ function renderTransport(scrollToCurrent, dayVal) {
           '<div class="tc-mid-veh">' + esc(t.vehicle) + '</div>' +
         '</div>' +
         '<div class="tc-arr">' +
-          '<div class="tc-time' + stateClass + '">' + (t.arrive||'—') + '</div>' +
+          '<div class="tc-time' + timeClass + '">' + (t.arrive||'—') + '</div>' +
           '<div class="tc-place" style="text-align:right">' + esc(t.to) + '</div>' +
         '</div>' +
       '</div>' +
+      notesHtml +
       '<div class="tc-footer">' +
         '<svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>' +
         '<span class="tc-footer-txt">' + t.count + ' คัน</span>' +
-        (isNow      ? '<span class="tc-now-badge">Now</span>'           : '') +
-        (isUpcoming ? '<span class="tc-upcoming-badge">Upcoming</span>' : '') +
+        (isCancelled ? '<span class="tc-cancelled-badge">ยกเลิก</span>'     : '') +
+        (isDelayed   ? '<span class="tc-delayed-badge">ล่าช้า</span>'       : '') +
+        (isNow       ? '<span class="tc-now-badge">Now</span>'              : '') +
+        (isUpcoming  ? '<span class="tc-upcoming-badge">Upcoming</span>'    : '') +
       '</div>' +
     '</div>';
   }
