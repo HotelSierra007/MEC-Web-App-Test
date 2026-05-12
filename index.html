@@ -1110,6 +1110,7 @@
       <div id="transport-wrap" style="display:none">
         <div class="day-tabs" id="transport-day-tabs"></div>
         <div class="sched-date" id="transport-date"></div>
+        <div id="transport-wed-note" style="margin:0 16px 10px;padding:10px 12px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--yellow);border-radius:var(--r);font-size:12px;color:var(--text-2);line-height:1.6;">สำหรับผู้เข้าร่วมจะมีทีมผู้จัดงานรอรับทั้งที่สนามบินและสถานีรถบัส ตารางรถที่แสดงในวันนี้มีไว้สำหรับให้ผู้จัดตรวจสอบเวลาเท่านั้น</div>
         <div id="transport-tl" class="transport-tl"></div>
       </div>
       <div style="height:8px"></div>
@@ -1283,7 +1284,7 @@ function checkCampusNetwork() {
 // ════════════════════════════════════════════════════════
 // DATA — edit here to update content
 // ════════════════════════════════════════════════════════
-const CAMP_START = new Date("2026-05-11T00:00:00");
+const CAMP_START = new Date("2026-05-14T00:00:00");
 
 // Mutable: replaced at runtime by loadAnnouncements() from /data.json.
 // The values here are seed data for first paint before the fetch resolves
@@ -1438,6 +1439,17 @@ let SCHEDULE = [
 
 
 let TRANSPORT = [
+  // DAY 0 · Wed 13 May 2026 (arrival day)
+  { day:-1, time:"11:30", arrive:"11:50", from:"สนามบิน", to:"Furama", vehicle:"รถตู้", count:1 },
+  { day:-1, time:"11:50", arrive:"12:10", from:"สนามบิน", to:"Furama", vehicle:"รถตู้", count:1 },
+  { day:-1, time:"13:40", arrive:"14:00", from:"สนามบิน", to:"Furama", vehicle:"รถตู้", count:1 },
+  { day:-1, time:"14:40", arrive:"15:00", from:"สนามบิน", to:"Furama", vehicle:"รถตู้", count:1 },
+  { day:-1, time:"16:30", arrive:"16:50", from:"สนามบิน", to:"Furama + แกรนด์ ชัยพฤกษ์", vehicle:"รถบัส 35 คน", count:1 },
+  { day:-1, time:"19:40", arrive:"20:00", from:"สนามบิน", to:"Furama", vehicle:"รถตู้", count:1 },
+  { day:-1, time:"20:35", arrive:"20:55", from:"สนามบิน", to:"Furama", vehicle:"รถตู้", count:1 },
+  { day:-1, time:"20:35", arrive:"20:55", from:"อาเขต", to:"Furama", vehicle:"รถตู้", count:1 },
+  { day:-1, time:"21:00", arrive:"21:20", from:"สนามบิน", to:"Furama", vehicle:"รถตู้", count:1 },
+
   // DAY 1 · Thu 14 May 2026
   { day:0, time:"08:30", arrive:"08:45", from:"Furama", to:"อาคารเรียนรวม", vehicle:"รถบัส 40 คน", count:2 },
   { day:0, time:"08:30", arrive:"08:45", from:"Furama", to:"อาคารเรียนรวม", vehicle:"รถบัส 35 คน", count:2 },
@@ -1467,9 +1479,9 @@ let TRANSPORT = [
 ];
 const DAY_LABELS        = ["Thu 14/5","Fri 15/5","Sat 16/5"];
 const DAY_LONG          = ["Thursday, 14 May 2026","Friday, 15 May 2026","Saturday, 16 May 2026"];
-const TRANSPORT_DAY_LABELS = ["Thu 14/5","Fri 15/5","Sat 16/5"];
-const TRANSPORT_DAY_LONG   = ["Thursday, 14 May 2026","Friday, 15 May 2026","Saturday, 16 May 2026"];
-const TRANSPORT_DAY_IDX    = [0, 1, 2]; // maps tab index → TRANSPORT.day value
+const TRANSPORT_DAY_LABELS = ["Wed 13/5","Thu 14/5","Fri 15/5","Sat 16/5"];
+const TRANSPORT_DAY_LONG   = ["Wednesday, 13 May 2026","Thursday, 14 May 2026","Friday, 15 May 2026","Saturday, 16 May 2026"];
+const TRANSPORT_DAY_IDX    = [-1, 0, 1, 2]; // maps tab index → TRANSPORT.day value
 const DRESS_CODE = [
   { icon:"👔", text:"ชุดสุภาพ (Smart Casual)", en:"Smart Casual — formal dress not required" },
   { icon:"👕", text:"เสื้อค่าย",                en:"Camp Shirt"                                },
@@ -1620,13 +1632,13 @@ function renderNextBus() {
   var nm = nowMin();
   var html = '';
 
-  // Before transport period — show first bus of May 14
-  if (td === null || td === -1) {
-    var firstBuses = TRANSPORT.filter(function(t) { return t.day === 0 && t.status !== 'cancelled'; });
+  // Before transport period — show first bus of May 13
+  if (td === null) {
+    var firstBuses = TRANSPORT.filter(function(t) { return t.day === -1 && t.status !== 'cancelled'; });
     if (firstBuses.length === 0) { el.innerHTML = '<div style="font-size:13px;color:var(--text-3);">ไม่มีข้อมูลรอบรถ</div>'; return; }
     var nextTime = firstBuses[0].time;
     var buses = firstBuses.filter(function(t) { return t.time === nextTime; });
-    html = buildBusCard(buses, nextTime, null, 'Upcoming · Thu 14 May', 'var(--text-2)');
+    html = buildBusCard(buses, nextTime, null, 'Upcoming · Wed 13 May', 'var(--text-2)');
     el.innerHTML = html;
     return;
   }
@@ -1877,9 +1889,10 @@ function setSubTab(tab) {
   if (tab === 'transport') {
     // Default to today's transport day, or Thu 14 if outside transport dates
     var td = transportDay();
-    if (td !== null && td >= 0) activeTransportDay = td; // May 14-16 → Thu/Fri/Sat tab
-    else activeTransportDay = 0;                 // outside or May 13 → default Thu
-    if (activeTransportDay > 2) activeTransportDay = 2;
+    if (td === -1) activeTransportDay = 0;       // May 13 → Wed tab
+    else if (td !== null) activeTransportDay = td + 1; // May 14-16 → Thu/Fri/Sat tab
+    else activeTransportDay = 1;                 // outside → default Thu
+    if (activeTransportDay > 3) activeTransportDay = 3;
     renderTransportDay(transportDay() !== null);
   }
 }
@@ -1891,6 +1904,8 @@ function renderTransportDay(scrollToCurrent) {
     '<button class="day-tab' + (i===activeTransportDay?' active':'') + '" onclick="setTransportDay(' + i + ')">' + d + '</button>'
   ).join('');
   document.getElementById('transport-date').textContent = TRANSPORT_DAY_LONG[activeTransportDay];
+  var note = document.getElementById('transport-wed-note');
+  if (note) note.style.display = activeTransportDay === 0 ? '' : 'none';
   renderTransport(scrollToCurrent, dayVal);
 }
 
