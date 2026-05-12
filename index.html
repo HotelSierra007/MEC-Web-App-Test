@@ -1110,8 +1110,7 @@
       <div id="transport-wrap" style="display:none">
         <div class="day-tabs" id="transport-day-tabs"></div>
         <div class="sched-date" id="transport-date"></div>
-        <div id="transport-wed-note" style="margin:0 16px 10px;padding:10px 12px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--yellow);border-radius:var(--r);font-size:12px;color:var(--text-2);line-height:1.6;">สำหรับผู้เข้าร่วมจะมีทีมผู้จัดงานรอรับทั้งที่สนามบินและสถานีรถบัส ตารางรถที่แสดงในวันนี้มีไว้สำหรับให้ผู้จัดตรวจสอบเวลาเท่านั้น</div>
-        <div id="transport-tl" class="transport-tl"></div>
+<div id="transport-tl" class="transport-tl"></div>
       </div>
       <div style="height:8px"></div>
     </div>
@@ -1904,9 +1903,7 @@ function renderTransportDay(scrollToCurrent) {
     '<button class="day-tab' + (i===activeTransportDay?' active':'') + '" onclick="setTransportDay(' + i + ')">' + d + '</button>'
   ).join('');
   document.getElementById('transport-date').textContent = TRANSPORT_DAY_LONG[activeTransportDay];
-  var note = document.getElementById('transport-wed-note');
-  if (note) note.style.display = activeTransportDay === 0 ? '' : 'none';
-  renderTransport(scrollToCurrent, dayVal);
+renderTransport(scrollToCurrent, dayVal);
 }
 
 function setTransportDay(i) {
