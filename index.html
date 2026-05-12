@@ -734,7 +734,7 @@
     /* box-shadow instead of border-width so .tc.now never triggers a layout reflow */
     .tc.now      { background:rgba(26,191,160,.06);  border-color:var(--teal);   box-shadow:inset 0 0 0 0.5px var(--teal); }
     .tc.upcoming { background:rgba(245,200,66,.05);  border-color:var(--yellow); box-shadow:inset 0 0 0 0.5px var(--yellow); }
-    .tc-times { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+    .tc-times { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:10px; }
     .tc-dep, .tc-arr { min-width:0; max-width:38%; }
     .tc-dep { text-align:left; }
     .tc-arr { text-align:right; }
@@ -758,7 +758,7 @@
     .tc.tc-cancelled .tc-time,
     .tc.tc-cancelled .tc-place { text-decoration:line-through; text-decoration-thickness:1.5px; }
     .tc.tc-delayed { background:rgba(245,200,66,.05); border-color:rgba(245,200,66,.35); }
-    .tc-notes { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text-2); margin-top:8px; padding-top:8px; border-top:1px solid var(--border-lt); line-height:1.45; }
+    .tc-notes { display:flex; align-items:flex-start; gap:6px; font-size:12px; color:var(--text-2); margin-top:8px; margin-bottom:8px; padding-top:8px; border-top:1px solid var(--border-lt); line-height:1.45; }
     .tc-notes svg { width:13px; height:13px; flex-shrink:0; }
     .tc.tc-delayed .tc-notes   { color:var(--yellow); }
     .tc.tc-cancelled .tc-notes { color:var(--red); opacity:.9; }
