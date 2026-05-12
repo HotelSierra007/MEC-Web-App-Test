@@ -741,7 +741,7 @@
     .tc-time { font-size:22px; font-weight:700; font-family:'Inter',monospace; color:var(--text); line-height:1.1; }
     .tc-time.now      { color:var(--teal); }
     .tc-time.upcoming { color:var(--yellow); }
-    .tc-place { font-size:12px; color:var(--text-2); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:100%; }
+    .tc-place { font-size:12px; color:var(--text-2); margin-top:2px; overflow-wrap:break-word; word-break:break-word; width:100%; }
     .tc-mid { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:0 8px; }
     .tc-mid-dur { font-size:11px; color:var(--text-3); }
     .tc-mid-arrow { display:flex; align-items:center; width:100%; }
@@ -1942,7 +1942,7 @@ function renderTransport(scrollToCurrent, dayVal) {
     var extraClass  = isCancelled ? ' tc-cancelled' : (isDelayed ? ' tc-delayed' : '');
     var stateClass  = (isCancelled || isDelayed) ? '' : (isNow ? ' now' : (isUpcoming ? ' upcoming' : ''));
     var timeClass   = (isCancelled || isDelayed) ? '' : stateClass;
-    var notesHtml   = (t.notes && (isCancelled || isDelayed))
+    var notesHtml   = t.notes
       ? '<div class="tc-notes">' + warningIcon + esc(t.notes) + '</div>' : '';
     html += '<div class="tc' + extraClass + stateClass + '">' +
       '<div class="tc-times">' +
